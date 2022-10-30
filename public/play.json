@@ -1,0 +1,20 @@
+{
+    "scenarios": {
+        "a": {
+            "question": "Who should the Dom sit next to?",
+            "type": "bus_question",
+            "options": ["1","2","3"],
+            "meta": {"1": "a", "2": "b", "3": "c"}
+        },
+        "b": {
+            "options": ["1","2","3"],
+            "direction": {"1": "a", "2": "b", "3": "c"}
+        },
+        "c": {
+            "options": ["1","2","3"],
+            "direction": {"1": "a", "2": "b", "3": "c"}
+        }
+
+    },
+    "start": "a"
+}

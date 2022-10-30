@@ -18,17 +18,26 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
+# Play requirements
 
-To learn more about Next.js, take a look at the following resources:
+Things to create:
+    - contents of this should have all questions / scenarios.
+    - Each scenario should also lead to the next branch in the story line
+    - There should be a way of repeating scenarios
+    - There should be a defined start and end
+    - There should be a way of defining a conditional end: eg after 5 scenarios
+        - There shuold be a catchall funnel or all branches should be well-defined
+        - well defined meaning that they have distinct start and end nodes, and methods of moving from one to the other.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Technical Questions and task list:
+- play.json
+    - A file which describes scenarios, story flows, how each scenario is connected and start points for the procession of the play.
+    - [ ] create a reader, such that when a new client starts up, it will be able to go to the particular part of the storyline.
+- how to run the poll?
+    - does the poll need a database?
+- how do we represent global state for all users?
+    - in next.js, we have the ability to run server side functions to render content - usually done through creating an `_app.js` or `_document.js` file:
+        - `_app.js`: runs on both server and client
+        - `_document.js`: only runs server side script
+        
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
