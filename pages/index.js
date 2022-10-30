@@ -2,14 +2,33 @@ import Head from 'next/head'
 import Image from 'next/image'
 import VotingCard from '../components/VotingCard'
 import styles from '../styles/Home.module.css'
+import useSWR from "swr";
 
+const fetcher = (url) => fetch(url).then((res) => res.json());
 export default function Home() {
+  const { data, error } = useSWR(
+    "http://127.0.0.1:5000/",
+    fetcher
+  );
 
-  // let [teams, setTeams] = useState([]);
-  let question = "Who Should Dom sit next to on the bus?"
-  let answers = [{text: "Friend 1", link: "/api/1"}, {text: "Friend 2", link: "/api/2"} ]
-  let sample_props = {question: question, answers: answers}
+  if (error) return "An error has occurred.";
+  if (!data) return "Loading..."; 
   
+
+  let start = data.start;
+  // let [teams, setTeams] = useState([]);
+  let question = data.scenarios[start].question;
+  // let question = "Who Should Dom sit next to on the bus?"
+  let options = [];
+  console.log('start: ', start, 'data_scen_start: ', data.scenarios[start].options);
+  data.scenarios[start].options.map((el) => {
+    options.push({
+      text : el,
+      link : "/api/"+data.scenarios[start].meta[el]
+    }) 
+  });
+  // let answers = [{text: "Friend 1", link: "/api/1"}, {text: "Friend 2", link: "/api/2"} ]
+
   return (
     <div className={styles.container}>
       <Head>
@@ -20,7 +39,7 @@ export default function Home() {
 
       <VotingCard
         question={question}
-        answers={answers}
+        options={options}
       />
 
       <footer className={styles.footer}>

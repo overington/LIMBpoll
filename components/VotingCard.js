@@ -2,8 +2,8 @@ import React from "react";
 import styles from '../styles/Home.module.css'
 
 export default function VotingCard(props) {
-    // props: question, answers
-    // props.answers: answer.text, answer.link
+    // props.question: string
+    // props.options: Array[Object] [{ text: $text, link: $link}, ...]
 
     return (
       <main className={styles.main}>
@@ -16,10 +16,10 @@ export default function VotingCard(props) {
         </h1>
 
         <div className={styles.grid}>
-            {props.answers.map(answer => {
+            {props.options.map(el => {
                 return (
-                  <a href={answer.link} className={styles.card}>
-                      <h2>{answer.text}</h2>
+                  <a href={el.link} className={styles.card}>
+                      <h2>{el.text}</h2>
                   </a>
                 );
             }) }

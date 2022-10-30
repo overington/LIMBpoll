@@ -41,3 +41,5 @@ Things to create:
         - `_document.js`: only runs server side script
         
 
+# API
+ - `api/start/`: should return 
