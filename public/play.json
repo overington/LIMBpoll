@@ -2,19 +2,22 @@
     "scenarios": {
         "a": {
             "question": "Who should the Dom sit next to?",
-            "type": "bus_question",
+            "type": "simple",
             "options": ["1","2","3"],
             "meta": {"1": "a", "2": "b", "3": "c"}
         },
         "b": {
+            "question": "What is the meaning of life?",
+            "type": "simple",
             "options": ["1","2","3"],
             "direction": {"1": "a", "2": "b", "3": "c"}
         },
         "c": {
+            "question": "Do you like to dance?",
+            "type": "simple",
             "options": ["1","2","3"],
             "direction": {"1": "a", "2": "b", "3": "c"}
         }
 
-    },
-    "start": "a"
+    }
 }

@@ -18,7 +18,7 @@ export default function VotingCard(props) {
         <div className={styles.grid}>
             {props.options.map(el => {
                 return (
-                  <a href={el.link} className={styles.card}>
+                  <a href={el.link} className={styles.card} key={el.id}>
                       <h2>{el.text}</h2>
                   </a>
                 );
