@@ -68,7 +68,13 @@ export function Scenarios(props) {
 
 }
 export function VoteCount(props) {
-  if (props.vote_count == null) return <p>Loading Vote Count...</p>
+  console.log('question: ', props.question)
+  if (props.current_question == null) {
+    return <p>Loading Vote Count...</p>
+  }
+  else if (props.current_question == 'empty'){
+    return <p>Choose question.</p>
+  } else {
   console.log('vote_count Obj: ', Object.entries(props.vote_count))
   return (<>
     <h1>Counting the votes here</h1>
@@ -81,7 +87,7 @@ export function VoteCount(props) {
         )
     })}
     </ul>
-  </>)
+  </>)}
 
 
 }

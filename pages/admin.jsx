@@ -69,7 +69,7 @@ export default function AdminPage(props) {
     })
 
     socket.on('dashboard-answer', (question, vote) => {
-      console.log('vote: ', vote, ' for question ', question)
+      console.log('AUDIENCE - ', question, ': with vote: ', vote)
       // TODO
       if (question == current_question) incrementVoteCount(vote)
     })
@@ -77,21 +77,6 @@ export default function AdminPage(props) {
 
   const [current_question, setCurrentQuestion] = useState('empty')
   const { current_q_obj, vote_count_obj, incrementVoteCount } = useQuestion(current_question, props.scenarios)
-
-
-
-  // const handleVote = (vote) => {
-    // console.log('vote_count: ', vote_count)
-    // const new_vote_obj = vote
-    // console.log('new_vote_obj: ', new_vote_obj, ' vote: ', vote)
-    // new_vote_obj[vote]++
-    // console.log('incremented: ', new_vote_obj[vote])
-    // setVoteCount(new_vote_obj)
-  // }
-  // update options
-
-    // TODO incrementVoteCount()
-
 
 
 
@@ -111,6 +96,7 @@ export default function AdminPage(props) {
       <p>Current question: {current_question}</p>
       <VoteCount
         vote_count={vote_count_obj}
+        question={current_question}
       />
       <p>bar chart here</p>
 
