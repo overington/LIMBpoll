@@ -4,85 +4,117 @@ import styles from '../styles/Home.module.css'
 import { useState, useEffect } from 'react'
 import io from 'Socket.IO-client'
 
-
+import { VoteCount, Scenarios } from '../components/VotingCard'
 import { useSessionState } from '../components/states'
 
-let socket;
-async function socketInitializer(current_question) {
-  await fetch('/api/socketio');
-  socket = io()
+function createEmptyVoteObject(options) {
+  const new_obj = {}
+  if ( options.length > 0 ) {
+    options.map((op) => new_obj[op] = 0)
+  }
+  return new_obj
+}
 
-  socket.on('connect', () => {
-    console.log('connected')
-  })
-  // Audience call initialze current session values
-  socket.on('update-question-audience', (msg, callback) => {
-    // send to audience
-    console.log('audience member has requested callback')
-    callback({
-      status: 'ok',
-      current: current_question
+let socket
+
+export function useQuestion(current_question, scenarios) {
+  const [current_q_obj, setCurrentQObj] = useState(scenarios[current_question])
+  const [vote_count_obj, setVoteCount] = useState(createEmptyVoteObject(current_q_obj.options))
+  const incrementVoteCount = (vote) => ({...vote_count, vote: vote_count[vote]+1})
+  // useEffect(() => {
+  //   console.log(vote_count_obj)
+  // }, [vote_count_obj])
+
+  // When Admin changes current_question
+  useEffect(()=>{
+    // Tell server to tell everyone about it
+    socket.emit('update-question-admin', current_question, (response) => {
+      if (response.status == 'ok') {
+        // Save it to the database
+        fetch('/api/current/', {
+          method: 'POST',
+          headers: {"Content-type": "application/json;charset=UTF-8"},
+          body: JSON.stringify({current: current_question})
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            // hydrate current_q_obj
+            setCurrentQObj(scenarios[current_question])
+            // reset voting object to all zeros
+            setVoteCount(
+              createEmptyVoteObject(current_q_obj.scenarios)
+            )
+          })
+      }
     })
+
+  }, [current_question])
+
+  return ({
+    current_q_obj: current_q_obj,
+    vote_count_obj: vote_count_obj,
+    incrementVoteCount: incrementVoteCount
   })
+
 }
 
 export default function AdminPage(props) {
-  // questions
-  const [current_question, setCurrentQuestion] = useState(null)
-  const S = props.scenarios
-
   // Socket init
   useEffect(() => {
-    socketInitializer(current_question)
-    fetch('/api/current')
-      .then((res) => res.json())
-      .then((data) => {
-        console.log('fetching first time to get curent: ', data)
-        setCurrentQuestion(data.current)
-      })
-  })
+    fetch('/api/socketio');
+    socket = io()
 
-
-  const handleUpdateQuestion = (key) => {
-    console.log('updating to question ', key)
-    const res = fetch('/api/current/', {
-      method: 'POST',
-      headers: {"Content-type": "application/json;charset=UTF-8"},
-      body: JSON.stringify({current: key})
+    socket.on('connect', () => {
+      console.log('connected')
     })
-    console.log('posted update question to api/current with payload: nothing')
-    socket.emit('update-question-admin', key, (response) => {
-      if (response.status == 'ok') {
-        setCurrentQuestion(key)
-      }
-    })
-  }
 
-  const Scenarios = Object.keys(S).map((key) => {
-    const currentItem = (key == current_question) ? 'selected' : ''
-    return (
-    <li key={key} className={`${styles.card} ${currentItem}`} >
-      <h5>Question {key}:</h5>
-      <h3>{S[key].question}</h3>
-         <button onClick={()=>handleUpdateQuestion(key)}>
-             Select
-         </button>
-    </li>
-      )
-  })
+    socket.on('dashboard-answer', (question, vote) => {
+      console.log('vote: ', vote, ' for question ', question)
+      // TODO
+      if (question == current_question) incrementVoteCount(vote)
+    })
+  }, [])
+
+  const [current_question, setCurrentQuestion] = useState('empty')
+  const { current_q_obj, vote_count_obj, incrementVoteCount } = useQuestion(current_question, props.scenarios)
+
+
+
+  // const handleVote = (vote) => {
+    // console.log('vote_count: ', vote_count)
+    // const new_vote_obj = vote
+    // console.log('new_vote_obj: ', new_vote_obj, ' vote: ', vote)
+    // new_vote_obj[vote]++
+    // console.log('incremented: ', new_vote_obj[vote])
+    // setVoteCount(new_vote_obj)
+  // }
+  // update options
+
+    // TODO incrementVoteCount()
+
+
 
 
   return (
     <>
-    <h1>Admin area</h1>
-    <h2>Questions</h2>
-    <ul>
-      {Scenarios}
-    </ul>
-    <h2>Dashboard</h2>
-      <div>
-        <p>bar chart here</p>
-      </div>
+    <div className={styles.section}>
+      <h1>Admin area</h1>
+      <h2>Questions</h2>
+      <Scenarios
+        scenarios={props.scenarios}
+        current_question={current_question}
+        setCurrentQuestion={setCurrentQuestion}
+      />
+    </div>
+    <div className={styles.section}>
+      <h2>Dashboard</h2>
+      <p>Current question: {current_question}</p>
+      <VoteCount
+        vote_count={vote_count_obj}
+      />
+      <p>bar chart here</p>
+
+    </div>
     </>
 
   )

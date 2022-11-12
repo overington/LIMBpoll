@@ -8,8 +8,7 @@ import VotingCard from '../components/VotingCard'
 
 
 let socket;
-async function socketInitializer({current, setCurrent}) {
-  // console.log('socketInitializer props: ', props)
+async function socketInitializer(setCurrent) {
   await fetch('/api/socketio');
   socket = io()
 
@@ -17,12 +16,6 @@ async function socketInitializer({current, setCurrent}) {
     console.log('connected')
   })
 
-  // First call to initialize current session values
-  socket.emit('update-question-audience', 'give me the values', (response) => {
-    if (response.status == 'ok') {
-      setCurrent(response.current)
-    }
-  })
 
   // Change 
   socket.on('update-input', (q) => {
@@ -35,38 +28,45 @@ async function socketInitializer({current, setCurrent}) {
 export default function Home(props) {
 
   const [current, setCurrent] = useState(null)
+  const [votecardtype, setVotecardtype] = useState('empty')
   useEffect(() => {
-    socketInitializer({
-      setCurrent,
-      current
-    })
+    socketInitializer(setCurrent)
     fetch('/api/current')
       .then((res) => res.json())
       .then((data) => {
         console.log('fetching first time to get curent: ', data)
         setCurrent(data.current)
       })
-  })
+  }, [])
+  useEffect(() => {
+    // Update voting card type
+    setVotecardtype(current)
+  }, [current])
+  const vote = (answer) => {
+    socket.emit('audience-submit-answer', current, answer)
+  }
 
   if (current == null) return "Loading..."
   // if (isLoading) return "Loading..."; 
   // if (isError) return "An error has occurred.";
 
-  let question = props.scenarios[current].question;
-  console.log(question, ' ')
-  console.log(props, ' ')
+  let question = props.scenarios[current].question
+  let description = props.scenarios[current].description
+
   let options = [];
   props.scenarios[current].options.map((el) => {
     options.push({
       text : el,
-      vote_callback : (el) => {vote(el)}
+      vote_callback : vote
     }) 
   });
 
   return (
       <VotingCard
         question={question}
+        description={description}
         options={options}
+        cardtype={votecardtype}
       />
   )
 }

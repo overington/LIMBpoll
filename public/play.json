@@ -1,22 +1,28 @@
 {
     "scenarios": {
+        "empty": {
+            "question": "Empty question",
+            "description": "Wait for further instructions",
+            "type": "empty",
+            "options": []
+        },
         "a": {
             "question": "Who should the Dom sit next to?",
+            "description": "Choose from the following",
             "type": "simple",
-            "options": ["1","2","3"],
-            "meta": {"1": "a", "2": "b", "3": "c"}
+            "options": ["group1","group2","group3"]
         },
         "b": {
-            "question": "What is the meaning of life?",
+            "question": "Which track should be played?",
+            "description": "",
             "type": "simple",
-            "options": ["1","2","3"],
-            "direction": {"1": "a", "2": "b", "3": "c"}
+            "options": ["track_1","track_2","track_3", "track_4"]
         },
         "c": {
             "question": "Do you like to dance?",
+            "description": "",
             "type": "simple",
-            "options": ["1","2","3"],
-            "direction": {"1": "a", "2": "b", "3": "c"}
+            "options": ["1","2","3"]
         }
 
     }

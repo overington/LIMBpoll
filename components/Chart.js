@@ -2,7 +2,7 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2'
 
-export default function(props) {
+export default function Chart(props) {
 
   return (
     <Bar

@@ -24,9 +24,9 @@ const SocketHandler = (req, res) => {
 
 
       // Audience member submits an answer
-      socket.on('submit-answer', answer => {
-        socket.broadcast.emit('dashboard-answer', dashboardAnswer)
-        socket.broadcast.emit('update-input', msg)
+      socket.on('audience-submit-answer', (question, vote) => {
+        console.log('audience submitted vote: ', vote, ' for question ', question)
+        socket.broadcast.emit('dashboard-answer', question, vote)
       })
     })
   }

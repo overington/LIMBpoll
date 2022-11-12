@@ -12,6 +12,12 @@
   align-items: center;
 }
 
+.section {
+  background: #fafafa;
+  border: 1px solid #eaeaea;
+  margin-bottom: 1rem;
+}
+
 .footer {
   display: flex;
   flex: 1;
@@ -72,6 +78,9 @@
   flex-wrap: wrap;
   max-width: 800px;
 }
+ul.grid {
+  list-style: none;
+}
 
 .card {
   margin: 1rem;
@@ -83,6 +92,9 @@
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   max-width: 300px;
+}
+li.card {
+  float: left
 }
 
 .card:hover,
