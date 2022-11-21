@@ -1,5 +1,27 @@
-import React from "react";
+import { useEffect } from "react";
 import styles from '../styles/Home.module.css'
+
+export function VoteButton(props) {
+  return (
+    <button className={styles.card} key={props.id} onClick={()=>props.vote_callback(props.text)}>
+      <h2>{props.text}</h2>
+    </button>
+  )
+}
+function VoteOptions(props) {
+  return (
+    <div>
+      {props.options.map(op => {
+        return (<VoteButton
+          id={op.id}
+          vote_callback={op.vote_callback}
+          text={op.text}
+          />)
+      }
+      )}
+    </div>
+  )
+}
 
 export default function VotingCard(props) {
   // props.question: string
@@ -7,11 +29,12 @@ export default function VotingCard(props) {
 
   if (props.cardtype == 'empty')  {
     return (
-    <EmptyVotingCard
-      question={props.question}
-      description={props.description}
-    />)
+      <EmptyVotingCard
+        question={props.question}
+        description={props.description}
+      />)
   }
+  // const options = VoteOptions(props.options, props.vote_submitted)
   return (
     <main className={styles.main}>
       <p className={styles.description}>
@@ -23,13 +46,9 @@ export default function VotingCard(props) {
       </h1>
 
       <div className={styles.grid}>
-          {props.options.map(op => {
-              return (
-                <button className={styles.card} key={op.id} onClick={()=>op.vote_callback(op.text)}>
-                    <h2>{op.text}</h2>
-                </button>
-              );
-          }) }
+        <VoteOptions
+          options={props.options}
+        />
       </div>
     </main>
 
@@ -51,22 +70,26 @@ export function EmptyVotingCard(props) {
 }
 
 export function Scenarios(props) {
-  const scenario_els = Object.keys(props.scenarios).map((key) => {
+  const makeScenario = (key) => {
     const currentItem = (key == props.current_question) ? 'selected' : ''
     return (
     <li key={key} className={`${styles.card} ${currentItem}`} >
       <h5>Question {key}:</h5>
       <h3>{props.scenarios[key].question}</h3>
-         <button onClick={()=>props.setCurrentQuestion(key)}>
-             Select
-         </button>
+      <button onClick={()=>props.setCurrentQuestion(key)}>
+         Select
+      </button>
     </li>)
-  })
-  return (<ul className={styles.grid}>
-        {scenario_els}
-        </ul>)
+  }
 
+  const scenario_els = Object.keys(props.scenarios).map(makeScenario)
+  return (
+    <ul className={styles.grid}>
+      {scenario_els}
+    </ul>
+  )
 }
+
 export function VoteCount(props) {
   console.log('question: ', props.question)
   if (props.current_question == null) {
@@ -88,6 +111,4 @@ export function VoteCount(props) {
     })}
     </ul>
   </>)}
-
-
 }

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import io from 'Socket.IO-client'
 import useSWR from 'swr'
 
-import VotingCard from '../components/VotingCard'
+import VotingCard from '../components/voting'
 
 
 let socket;
@@ -29,6 +29,7 @@ export default function Home(props) {
 
   const [current, setCurrent] = useState(null)
   const [votecardtype, setVotecardtype] = useState('empty')
+  const [vote_submitted, setVoteSubmitted] = useState(false)
   useEffect(() => {
     socketInitializer(setCurrent)
     fetch('/api/current')
@@ -38,12 +39,16 @@ export default function Home(props) {
         setCurrent(data.current)
       })
   }, [])
+  // When Admin has changed current question
   useEffect(() => {
     // Update voting card type
     setVotecardtype(current)
+    setVoteSubmitted(false)
+
   }, [current])
   const vote = (answer) => {
     socket.emit('audience-submit-answer', current, answer)
+    setVoteSubmitted(true)
   }
 
   if (current == null) return "Loading..."
@@ -62,12 +67,15 @@ export default function Home(props) {
   });
 
   return (
+    <>
       <VotingCard
         question={question}
         description={description}
         options={options}
         cardtype={votecardtype}
+        vote_submitted={vote_submitted}
       />
+    </>
   )
 }
 
