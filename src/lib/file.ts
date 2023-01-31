@@ -2,7 +2,7 @@ const fs = require('fs')
 const fsPromises = fs.promises
 
 
-export function updateSession(loc, updates) {
+export function updateSession(loc:string, updates:object) {
   // read the file
   const filePath = path.join(process.cwd(), loc);
   fs.readFile(filePath, 'utf8', (err, data) => {
@@ -29,7 +29,7 @@ export function updateSession(loc, updates) {
 // import fsPromises from 'fs/promises'
 import path from 'path'
 
-export async function getJsonObj(loc) {
+export async function getJsonObj(loc:string) {
   const filePath = path.join(process.cwd(), loc);
   const jsonData = await fsPromises.readFile(filePath);
   const objectData = JSON.parse(jsonData);
