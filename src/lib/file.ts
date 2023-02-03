@@ -32,6 +32,14 @@ import path from 'path'
 export async function getJsonObj(loc:string) {
   const filePath = path.join(process.cwd(), loc);
   const jsonData = await fsPromises.readFile(filePath);
-  const objectData = JSON.parse(jsonData);
+  const objectData: object = JSON.parse(jsonData);
   return objectData
+}
+
+import { ScenariosType } from '@/types/VotingTypes';
+
+export async function getScenarios() {
+  const play = await getJsonObj('src/data/play.json')
+  const scenarios: ScenariosType = new ScenariosType({play.scenarios})
+  return scenarios
 }
