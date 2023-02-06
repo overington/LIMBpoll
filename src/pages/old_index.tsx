@@ -3,7 +3,7 @@ import { useSessionState } from '@/components/states'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
-import VotingCard from '@/components/VotingCard'
+import VotingCard from '@/components/Voting'
 
 
 export default function Home(props) {

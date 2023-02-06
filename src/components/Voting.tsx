@@ -1,7 +1,11 @@
 import React from "react";
 import styles from '@/styles/Home.module.css'
+import { ScenarioType } from '@/lib/types'
 
-export default function VotingCard(props) {
+// Takes in one ScenarioType object and renders an component that displays the
+// question and options for that scenario, and allows the user to vote on the
+// scenario using the vote_callback function.
+export default function Scenario(props: {scenario: ScenarioType, vote_callback: (vote: number) => void}) {
   // props.question: string
   // props.options: Array[Object] [{ text: $text, link: $link}, ...]
 

@@ -18,5 +18,9 @@
             "type": "simple",
             "options": ["1. Are you kidding me, it’s gotta be with his mates, Mia and Jayda.","2. Nah, for real for real, T-Money’s got bars, so of course we’re sitting with him."]
         }
+    },
+    "network_msgs": {
+        "loading": "Loading scenario...",
+        "error": "Failed to load scenario...."
     }
 }

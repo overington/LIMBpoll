@@ -4,7 +4,7 @@ import styles from '../styles/Home.module.css'
 import { useState, useEffect } from 'react'
 import io from 'Socket.IO-client'
 
-import { VoteCount, Scenarios } from '../components/VotingCard'
+import { VoteCount, Scenarios } from '../components/Voting'
 import { useSessionState } from '../components/states'
 
 function createEmptyVoteObject(options) {

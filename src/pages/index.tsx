@@ -1,44 +1,42 @@
-import { useSessionState } from '@/components/states'
+import { HomeProps } from '@/types/VotingTypes'
 
-import useSWR from 'swr'
+import Scenario from '@/components/Voting'
+import { useVote } from '@/components/states'
 
-import VotingCard from '@/components/VotingCard'
-import { fetcher } from '@/lib/network'
-import { CurrentResponse } from '@/types/Voting'
+export default function HomeTest(playProps: HomeProps) {
+  console.log("playProps: ", playProps)
+  const {current_scenario, isLoading, isError, vote_callback} = useVote( playProps.scenarios)
+  console.log("currtent_scenario: ", current_scenario)
+  
+  return (
+    <p>TEST</p>
+  )
+}
+export function HomeReal(playProps: HomeProps) {
+  console.log("playProps: ", playProps)
+  const {current_scenario, isLoading, isError, vote_callback} = useVote( playProps.scenarios)
 
-import { ScenarioEnum } from '@/types/VotingTypes'
-export default function Home({scenarios}) {
-  const {question, q_error, q_isloading} = useSWR<CurrentResponse>('/api/current', fetcher)
 
+  if (isError) return playProps.network_msgs['error']
+  if (isLoading) return playProps.network_msgs['loading']
 
-  if (q_error) return "Failed to load question..."
-  if (q_isloading) return "Loading..."
-
-  // let question = props.scenarios[current].question
-  // let description = props.scenarios[current].description
-
-  // let options = [];
-  // props.scenarios[current].options.map((el) => {
-  //   options.push({
-  //     text : el,
-  //     vote_callback : vote
-  //   }) 
-  // });
-  console.log("question: " , question.text)
+  console.log("currtent_scenario: ", current_scenario)
+  
 
   return (
-      <VotingCard
-        question={question.text}
-        description={question.description}
-        options={question.options}
+      <Scenario
+        scenario={current_scenario}
+        vote_callback={vote_callback}
       />
   )
 }
 
 
-import { getScenarios } from '@/lib/file'
+import { getPlay } from '@/lib/file'
 
-export async function getStaticProps(context) {
-  const scenarios = await getScenarios()
-  return { props: { scenarios } }
+export const getStaticProps = async () => {
+  const playProps = await getPlay()
+  return {
+    props: playProps  
+  }
 }

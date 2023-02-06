@@ -1,22 +1,34 @@
 // This file contains the types for the voting module
 
 // Type for the scenarios
-export type ScenariosType = {
-    [key: string]: ScenarioType
+export type HomeProps = {
+    scenarios: {
+        [key: string]: ScenarioType
+    }
+    network_msgs: {
+        [key: string]: string
+    }
 }
 
 // Single scenario type
 export type ScenarioType = {
-    id: string,
+    id: number,
     title: string,
     description: string,
-    card_type: CardTypeEnum,
+    voting_card_type: VotingCardTypeEnum,
     options: string[]
 } 
 
 // Enum for scenario type
-export enum CardTypeEnum {
+export enum VotingCardTypeEnum {
     SingleChoice = 'single-choice',
     MultipleChoice = 'multiple-choice',
     Text = 'text'
 }
+
+// Server types
+export type StateType = {
+    current_scenario: string
+    vote_count: number
+}
+
