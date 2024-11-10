@@ -1,6 +1,6 @@
 "use client";
 
-import { EmptyCard } from "@/components/Card";
+import Card, {CardTitle, CardSubtitle} from "@/components/Card";
 import useSWR from "swr";
 import { questions, Question } from "@/data/questions";
 import { useState, useEffect } from "react";
@@ -9,7 +9,7 @@ const API_URL = "/vote";
 
 
 
-export const QuestionCard = ({ question, question_id, vote_count }: { question: Question, question_id: string, vote_count: number[]|null }) => {
+export const QuestionCard = ({ question, question_id }: { question: Question, question_id: string}) => {
   const handleVote = async (question_id: string, vote_id: string) => {
     try {
       const submit_url = `${API_URL}/${question_id}/${vote_id}`;
@@ -31,7 +31,7 @@ export const QuestionCard = ({ question, question_id, vote_count }: { question: 
   };
 
   return (
-    <EmptyCard>
+    <Card>
       <div className="font-mono">
         &gt;&gt;&gt; <span className="font-bold text-red-500">Question:</span>{" "}<span>{question.title}</span>
         <p className="mx-2">{question.question}</p>
@@ -49,7 +49,7 @@ export const QuestionCard = ({ question, question_id, vote_count }: { question: 
           ))}
         </ul>
       </div>
-    </EmptyCard>
+    </Card>
   );
 };
 
@@ -58,7 +58,6 @@ export const QuestionCard = ({ question, question_id, vote_count }: { question: 
 
 export function useQuestion() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
   const { data, error } = useSWR(API_URL, fetcher);
   
 
@@ -90,13 +89,3 @@ export const CurrentQuestion = () => {
 
   return <QuestionCard question={currentQuestion} question_id={currentQuestionID} vote_count={null} />;
 };
-
-export const Votes = () => {
-  return (
-    <div>
-      {Object.keys(questions).map((question_id) => (
-        <QuestionCard key={question_id} question={questions[question_id]} question_id={question_id} />
-      ))}
-    </div>
-  );
-}

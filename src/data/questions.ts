@@ -1,6 +1,7 @@
 import data from "@/data/questions.json";
 
 export type Question = {
+  id: string;
   title: string;
   question: string;
   options: string[];

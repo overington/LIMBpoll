@@ -7,31 +7,19 @@
  *
  */
 
+import Link from "next/link";
 import Card from "@/components/Card";
-import { questions } from "@/data/questions";
+import Dashboard from "@/components/Dashboard";
 
 
 export default function AdminPage() {
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Card title="Questions" description="Select Which Question to show">
-          <span>Chosen ID: </span>
-        </Card>
-      { Object.keys(questions).map((questionID) => (
-        <Card key={questionID} title={questions[questionID].title} description={questions[questionID].question}>
-          <ul>
-            { questions[questionID].options.map((option, index) => (
-                <li key={index}>{option}</li>
-              ))
-            }
-          </ul>
-        </Card>
-        ) ) }
-      </main>
+      <Dashboard />
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <h3 className="text-sm text-slate-800">footer text</h3>
+        <Link href="/">Vote</Link>
+        <Link href="/admin">admin</Link>
       </footer>
     </div>
   );
