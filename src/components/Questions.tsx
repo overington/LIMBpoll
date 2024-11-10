@@ -58,18 +58,43 @@ export const QuestionCard = ({ question, question_id }: { question: Question, qu
 
 export function useQuestion() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  const { data, error } = useSWR(API_URL, fetcher);
+  const { data, error, isLoading, isValidating, mutate } = useSWR(API_URL, fetcher);
+  const handleQuestionChange = async (question_id: string) => {
+    try {
+      const response = await fetch(API_URL, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ question_id }),
+      });
+
+      if (!response.ok) {
+        console.log("Response:", response);
+        throw new Error("Network response was not ok");
+      }
+
+      const response_json = await response.json();
+      console.log("Question changed successfully:", response_json);
+      mutate();
+    } catch (error) {
+      console.error("Failed to change question:", error);
+    }
+  }
   
 
   return {
     currentQuestionID: data?.currentQuestionID,
-    voteCount: data?.currentVoteCounts,
-    isLoading: !error && !data,
+    currentVoteCounts: data?.currentVoteCounts,
+    // isLoading: !error && !data,
+    isLoading: isLoading,
+    isValidating: isValidating,
     isError: error,
+    handleQuestionChange,
   };
 }
 
-export const CurrentQuestion = () => {
+export function CurrentQuestion() {
   const { currentQuestionID, isLoading, isError } = useQuestion();
   const [ currentQuestion, setCurrentQuestion ] = useState<Question|undefined>(undefined);
 

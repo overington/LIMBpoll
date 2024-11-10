@@ -45,11 +45,28 @@ export async function GET(request: NextRequest) {
 // }
 
 export async function PUT(req: NextRequest) {
-    // Update the current question ID
-    const body = await req.json();
-    console.log(body);
+    // Admin form PUT request to change the current question and reset the vote counts
+    console.log("PUT request received", req);
+    try {
+        const formData = await req.json();
+        const questionID = formData.question_id;
 
-    return NextResponse.json({
-        success: true,
-    });
+        if (questions[questionID] === undefined) {
+            throw new Error('Invalid question ID');
+        }
+
+        currentQuestionID = questionID;
+        currentVoteCounts = [0, 0, 0, 0];
+
+        return NextResponse.json({
+            success: true,
+            message: "Question changed successfully",
+        }, { status: 200 }); // OK
+    } catch (error) {
+        console.error("Failed to change question:", error);
+        return NextResponse.json({
+            success: false,
+            message: error.message,
+        }, { status: 400 }); // Bad Request
+    }
 }

@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 // display of the Card component
 export function SectionCard(props: { title: string; description: string, children?: React.ReactNode}) {
     return (
@@ -18,9 +20,11 @@ export function CardSubtitle({ children } : { children: React.ReactNode }) {
 
 export default function Card(props: { children?: React.ReactNode, className?: string }) {
     const { className, children } = props;
+    const classes = clsx("items-center p-4 rounded-lg bg-slate-800 text-slate-300 shadow-lg w-full max-w-md", className);
     return (
-        <div className="items-center p-4 rounded-lg bg-slate-800 text-slate-300 shadow-lg w-full max-w-md">
-            {props.children? props.children : null}
+        <div className={classes}>
+        {/* <div className="items-center p-4 rounded-lg bg-slate-800 text-slate-300 shadow-lg w-full max-w-md"> */}
+            {children? children : null}
         </div>
     );
 }
