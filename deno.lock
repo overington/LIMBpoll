@@ -14,8 +14,7 @@
     "npm:react@18": "18.3.1",
     "npm:swr@^2.2.5": "2.2.5_react@18.3.1",
     "npm:tailwindcss@^3.4.13": "3.4.14_postcss@8.4.47",
-    "npm:typescript@5": "5.6.3",
-    "npm:zustand@^5.0.0-rc.2": "5.0.0_@types+react@18.3.11_react@18.3.1"
+    "npm:typescript@5": "5.6.3"
   },
   "npm": {
     "@alloc/quick-lru@5.2.0": {
@@ -2495,13 +2494,6 @@
     },
     "yocto-queue@0.1.0": {
       "integrity": "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="
-    },
-    "zustand@5.0.0_@types+react@18.3.11_react@18.3.1": {
-      "integrity": "sha512-LE+VcmbartOPM+auOjCCLQOsQ05zUTp8RkgwRzefUk+2jISdMMFnxvyTjA4YNWr5ZGXYbVsEMZosttuxUBkojQ==",
-      "dependencies": [
-        "@types/react",
-        "react"
-      ]
     }
   },
   "workspace": {
@@ -2520,8 +2512,7 @@
         "npm:react@18",
         "npm:swr@^2.2.5",
         "npm:tailwindcss@^3.4.13",
-        "npm:typescript@5",
-        "npm:zustand@^5.0.0-rc.2"
+        "npm:typescript@5"
       ]
     }
   }

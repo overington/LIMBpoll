@@ -2,56 +2,29 @@
 
 import { EmptyCard } from "@/components/Card";
 import useSWR from "swr";
+import { questions, Question } from "@/data/questions";
+import { useState, useEffect } from "react";
 
-export type Question = {
-  id: number;
-  title: string;
-  question: string;
-  options: string[];
-};
+const API_URL = "/vote";
 
-export const questions: Question[] = [
-  {
-    id: 1,
-    title: "Cassie's Spotify",
-    question:
-      "Alright, alright, DJ CASSIE CAS with the aux cord, trying to get something popping with 3 banging tracks. What we listening to, fam? Say your piece, now.",
-    options: [
-      "Tune!!!",
-      "Oh, I'm feeling this.",
-      "Aye!!!!  This and no other.",
-    ],
-  },
-  {
-    id: 2,
-    title: "Doms's Decision",
-    question:
-      "What to do, what to do…Your boy, Dom, has got a dilemma on his hands – sit with T-Money Tarquin and Hugo, or continue gaming with his A one from day one, Jayda.",
-    options: [
-      "Are you kidding me, it's gotta be with his bestie, Jayda.",
-      "Nah, for real for real, T-Money's got bars, so of course we're sitting with him and Hugo.",
-    ],
-  },
-];
 
-export const QuestionCard = ({ current }: { current: Question }) => {
+
+export const QuestionCard = ({ question, question_id, vote_count }: { question: Question, question_id: string, vote_count: number[]|null }) => {
   const handleVote = async (question_id: string, vote_id: string) => {
     try {
-      console.log(JSON.stringify({ questionId: question_id, vote: vote_id }))
-      const response = await fetch("/vote", {
+      const submit_url = `${API_URL}/${question_id}/${vote_id}`;
+      console.log("Submitting vote to:", submit_url);
+      const response = await fetch(submit_url, {
         method: "POST",
-        body: JSON.stringify({ questionId: question_id, vote: vote_id }),
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
+
       if (!response.ok) {
-        console.log(response)
+        console.log("Response:", response);
         throw new Error("Network response was not ok");
       }
-      let response_json = await response.json();
-      // Optionally handle the response
-      console.log("Vote submitted successfully");
+
+      const response_json = await response.json();
+      console.log("Vote submitted successfully:", response_json);
     } catch (error) {
       console.error("Failed to submit vote:", error);
     }
@@ -60,14 +33,15 @@ export const QuestionCard = ({ current }: { current: Question }) => {
   return (
     <EmptyCard>
       <div className="font-mono">
-        &gt;&gt;&gt; <span className="font-bold">Question:</span>{" "}
-        {current.question}
+        &gt;&gt;&gt; <span className="font-bold text-red-500">Question:</span>{" "}<span>{question.title}</span>
+        <p className="mx-2">{question.question}</p>
+        <p className="mx-2 text-slate-200 ">(Click to submit your answer below)</p>
         <ul className="px-4 my-2">
-          {current.options?.map((option_text, index) => (
+          {question.options?.map((option_text, index) => (
             <li key={index}>
               - <button
                 className="underline"
-                onClick={() => handleVote(current.id.toString(), index.toString())}
+                onClick={() => handleVote(question_id, index.toString())}
               >
                 {option_text}
               </button>
@@ -81,28 +55,48 @@ export const QuestionCard = ({ current }: { current: Question }) => {
 
 // make a GET request to the /api/vote endpoint
 // const fetcher = (url) => { const res = fetch(url); return res.json(); };
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export function useQuestion() {
-  const { data, error, mutate } = useSWR("/vote", fetcher);
-  const currentQuestion = questions.find(
-    (question: Question) => question.id === data?.currentQuestionID
-  );
-  const voteCount = data?.currentVoteCounts;
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+  const { data, error } = useSWR(API_URL, fetcher);
+  
 
   return {
-    currentQuestion: currentQuestion,
-    voteCount: voteCount,
+    currentQuestionID: data?.currentQuestionID,
+    voteCount: data?.currentVoteCounts,
     isLoading: !error && !data,
     isError: error,
   };
 }
 
 export const CurrentQuestion = () => {
-  const { currentQuestion, voteCount, isLoading, isError } = useQuestion();
+  const { currentQuestionID, isLoading, isError } = useQuestion();
+  const [ currentQuestion, setCurrentQuestion ] = useState<Question|undefined>(undefined);
+
+  useEffect(() => {
+    if (currentQuestionID !== undefined) {
+      setCurrentQuestion(questions[currentQuestionID]);
+    } else {
+      setCurrentQuestion(questions['q1']);
+    }
+  }, [currentQuestionID]);
+
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
+  if (currentQuestion === undefined) return <div>Question not found</div>;
 
-  return <QuestionCard current={currentQuestion} />;
+
+  return <QuestionCard question={currentQuestion} question_id={currentQuestionID} vote_count={null} />;
 };
+
+export const Votes = () => {
+  return (
+    <div>
+      {Object.keys(questions).map((question_id) => (
+        <QuestionCard key={question_id} question={questions[question_id]} question_id={question_id} />
+      ))}
+    </div>
+  );
+}

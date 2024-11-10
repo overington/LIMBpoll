@@ -1,0 +1,19 @@
+{
+  "q1": {
+    "title": "Cassie's Spotify",
+    "question": "Alright, alright, DJ CASSIE CAS with the aux cord, trying to get something popping with 3 banging tracks. What we listening to, fam? Say your piece, now.",
+    "options": [
+      "Tune!!!",
+      "Oh, I'm feeling this.",
+      "Aye!!!!  This and no other."
+    ]
+  },
+  "q2": {
+    "title": "Doms's Decision",
+    "question": "What to do, what to do... Your boy, Dom, has got a dilemma on his hands – sit with T-Money Tarquin and Hugo, or continue gaming with his A one from day one, Jayda.",
+    "options": [
+      "Are you kidding me, it's gotta be with his bestie, Jayda.",
+      "Nah, for real for real, T-Money's got bars, so of course we're sitting with him and Hugo."
+    ]
+  }
+}
