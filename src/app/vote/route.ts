@@ -48,8 +48,16 @@ export async function PUT(req: NextRequest) {
     // Admin form PUT request to change the current question and reset the vote counts
     console.log("PUT request received", req);
     try {
-        const formData = await req.json();
-        const questionID = formData.question_id;
+        // simple authentication with a token
+        const token = req.headers.get('Authorization');
+        console.log("Token:", token);
+        if (token !== 'Bearer YOUR_ACCESS_TOKEN') {
+            throw new Error('Invalid token');
+        }
+        const questionID = req.nextUrl.searchParams.get('set_current');
+        if (questionID === null) {
+            throw new Error('Invalid question ID');
+        }
 
         if (questions[questionID] === undefined) {
             throw new Error('Invalid question ID');

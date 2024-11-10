@@ -1,15 +1,19 @@
 "use client";
 
-import Card, {CardTitle, CardSubtitle} from "@/components/Card";
+import Card, { CardTitle, CardSubtitle } from "@/components/Card";
 import useSWR from "swr";
 import { questions, Question } from "@/data/questions";
 import { useState, useEffect } from "react";
 
 const API_URL = "/vote";
 
-
-
-export const QuestionCard = ({ question, question_id }: { question: Question, question_id: string}) => {
+export const QuestionCard = ({
+  question,
+  question_id,
+}: {
+  question: Question;
+  question_id: string;
+}) => {
   const handleVote = async (question_id: string, vote_id: string) => {
     try {
       const submit_url = `${API_URL}/${question_id}/${vote_id}`;
@@ -33,13 +37,17 @@ export const QuestionCard = ({ question, question_id }: { question: Question, qu
   return (
     <Card>
       <div className="font-mono">
-        &gt;&gt;&gt; <span className="font-bold text-red-500">Question:</span>{" "}<span>{question.title}</span>
+        &gt;&gt;&gt; <span className="font-bold text-red-500">Question:</span>{" "}
+        <span>{question.title}</span>
         <p className="mx-2">{question.question}</p>
-        <p className="mx-2 text-slate-200 ">(Click to submit your answer below)</p>
+        <p className="mx-2 text-slate-200 ">
+          (Click to submit your answer below)
+        </p>
         <ul className="px-4 my-2">
           {question.options?.map((option_text, index) => (
             <li key={index}>
-              - <button
+              -{" "}
+              <button
                 className="underline"
                 onClick={() => handleVote(question_id, index.toString())}
               >
@@ -58,15 +66,19 @@ export const QuestionCard = ({ question, question_id }: { question: Question, qu
 
 export function useQuestion() {
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  const { data, error, isLoading, isValidating, mutate } = useSWR(API_URL, fetcher);
-  const handleQuestionChange = async (question_id: string) => {
+  const { data, error, isLoading, isValidating, mutate } = useSWR(
+    API_URL,
+    fetcher
+  );
+  const setCurrentQuestion = async (question_id: string) => {
     try {
-      const response = await fetch(API_URL, {
+      console.log("Changing question to:", question_id);
+      const response = await fetch(`${API_URL}/?set_current=${question_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ question_id }),
+          "Authorization": "Bearer YOUR_ACCESS_TOKEN",
+        }
       });
 
       if (!response.ok) {
@@ -80,8 +92,7 @@ export function useQuestion() {
     } catch (error) {
       console.error("Failed to change question:", error);
     }
-  }
-  
+  };
 
   return {
     currentQuestionID: data?.currentQuestionID,
@@ -90,27 +101,33 @@ export function useQuestion() {
     isLoading: isLoading,
     isValidating: isValidating,
     isError: error,
-    handleQuestionChange,
+    setCurrentQuestion,
   };
 }
 
 export function CurrentQuestion() {
   const { currentQuestionID, isLoading, isError } = useQuestion();
-  const [ currentQuestion, setCurrentQuestion ] = useState<Question|undefined>(undefined);
+  const [currentQuestion, setCurrentQuestion] = useState<Question | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (currentQuestionID !== undefined) {
       setCurrentQuestion(questions[currentQuestionID]);
     } else {
-      setCurrentQuestion(questions['q1']);
+      setCurrentQuestion(questions["q1"]);
     }
   }, [currentQuestionID]);
-
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
   if (currentQuestion === undefined) return <div>Question not found</div>;
 
-
-  return <QuestionCard question={currentQuestion} question_id={currentQuestionID} vote_count={null} />;
-};
+  return (
+    <QuestionCard
+      question={currentQuestion}
+      question_id={currentQuestionID}
+      vote_count={null}
+    />
+  );
+}

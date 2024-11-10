@@ -7,8 +7,7 @@ import { useQuestion } from "@/components/Questions";
 export default function Dashboard() {
   // show each question in a card, set the current question to be highlighted
   //
-  const { currentQuestionID, currentVoteCounts, handleQuestionChange } =
-    useQuestion();
+  const { currentQuestionID, currentVoteCounts, setCurrentQuestion } = useQuestion();
   return (
     <form>
       <fieldset>
@@ -28,7 +27,7 @@ export default function Dashboard() {
                 key={questionID}
                 className={clsx({ "bg-emerald-700": isCurrent })}
               >
-                <input type="radio" name="current-question" id={el_id} />
+                <input type="radio" name="current-question" id={el_id} onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setCurrentQuestion(e.target.value)} value={questionID} checked={isCurrent} />
                 <label htmlFor={el_id}>
                   <CardTitle>{questions[questionID].title}</CardTitle>
                   <CardSubtitle>{questions[questionID].question}</CardSubtitle>

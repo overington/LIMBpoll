@@ -5,13 +5,13 @@ import { questions, Question } from '@/data/questions';
 
 // state of the vote counts
 let stateCount: { [questionId: string]: { [answerId: string]: number } } = {
-    "1": {
+    "q1": {
         "0": 0,
         "1": 0,
         "2": 0,
         "3": 0,
     },
-    "2": {
+    "q2": {
         "0": 0,
         "1": 0,
         "2": 0,
