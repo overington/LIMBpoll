@@ -4,8 +4,9 @@ import clsx from "clsx";
 import Card, { CardTitle, CardSubtitle, QuestionCard } from "@/components/Card";
 import { questions } from "@/data/questions";
 import { useCurrentQuestion} from "@/components/Questions";
+// import { useEffect } from "react";
 
-export function Admin({token}: {token: string}) {
+export function AdminDashboard({token}: {token: string}) {
   // show each question in a card, set the current question to be highlighted
   //
   const { currentQuestionID, currentVoteCounts, setCurrentQuestion } = useCurrentQuestion(token);
@@ -53,7 +54,7 @@ export function Admin({token}: {token: string}) {
   );
 }
 
-export function User({token}: {token: string}) {
+export function UserDashboard({token}: {token: string}) {
   const { currentQuestionID, voteHandler, isLoading, isError } = useCurrentQuestion(token);
 
   if (isLoading) return <div>Loading...</div>;

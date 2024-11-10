@@ -14,6 +14,8 @@ async function fetcher_GET_current_question(url: string) {
   }
   return response.json();
 }
+
+// fetcher function to set the current question
 async function fetcher_PUT_current_question(url: string, token: string) {
   const response = await fetch(url, {
         method: "PUT",
@@ -35,6 +37,7 @@ export function useCurrentQuestion(token: string) {
     (url) => fetcher_GET_current_question(url),
     {
       revalidateOnFocus: true,
+      refreshInterval: 5000,
     }
   );
   const setCurrentQuestion = async (question_id: string) => {

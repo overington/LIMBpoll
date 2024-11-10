@@ -1,14 +1,16 @@
 import { NextRequest , NextResponse } from 'next/server';
-import { questions } from '@/data/questions';
+import { questions, play_order } from '@/data/questions';
 import { ADMIN_TOKEN, USER_TOKEN } from '@/data/config';
+import clsx from 'clsx';
 
-let currentQuestionID = "q1";
+let currentQuestionID = play_order[1];
 let currentVoteCounts = [0, 0, 0, 0];
 
 
 
 export async function GET() {
     // Retrieve the current voting results (e.g., from database)
+    console.log("GET request received. Sending: ", currentQuestionID, currentVoteCounts);
     return NextResponse.json({
         currentQuestionID: currentQuestionID,
         currentVoteCounts: currentVoteCounts,
@@ -36,7 +38,7 @@ export async function POST(req: NextRequest) {
         console.error("Failed to submit vote:", error);
         return NextResponse.json({
             success: false,
-            message: error.message,
+            message: (error as Error).message,
         }, { status: 500 }); // Internal Server Error
     }
 }
@@ -69,7 +71,7 @@ export async function PUT(req: NextRequest) {
         console.error("Failed to change question:", error);
         return NextResponse.json({
             success: false,
-            message: error.message,
+            message: (error as Error).message,
         }, { status: 400 }); // Bad Request
     }
 }

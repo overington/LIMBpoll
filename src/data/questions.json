@@ -1,21 +1,86 @@
 {
-  "q1": {
-    "id": "q1",
-    "title": "Cassie's Spotify",
-    "question": "Alright, alright, DJ CASSIE CAS with the aux cord, trying to get something popping with 3 banging tracks. What we listening to, fam? Say your piece, now.",
-    "options": [
-      "Tune!!!",
-      "Oh, I'm feeling this.",
-      "Aye!!!!  This and no other."
-    ]
+  "questions": {
+    "Cassie_s_Spotify": {
+      "id": "Cassie_s_Spotify",
+      "type": "multiple_choice_question",
+      "title": "Cassie's Spotify:",
+      "question": "Alright, alright, DJ CASSIE CAS with the aux cord, trying to get something popping with 3 banging tracks. What we listening to, fam? Say your piece, now.",
+      "options": [
+        "Tune!!!",
+        "Oh, I'm feeling this.",
+        "Aye!!!!  This and no other."
+      ]
+    },
+    "Doms_s_Decision": {
+      "id": "Doms_s_Decision",
+      "type": "multiple_choice_question",
+      "title": "Doms's Decision:",
+      "question": "What to do, what to do... Your boy, Dom, has got a dilemma on his hands - sit with T-Money Tarquin and Hugo, or continue gaming with his A one from day one, Jayda.",
+      "options": [
+        "Are you kidding me, it's gotta be with his bestie, Jayda.",
+        "Nah, for real for real, T-Money's got bars, so of course we're sitting with him and Hugo."
+      ]
+    },
+    "Darren_s_Dilemma": {
+      "id": "Darren_s_Dilemma",
+      "type": "multiple_choice_question",
+      "title": "Darren's Dilemma:",
+      "question": "Oh dear, Darren's got a dilemma on his hands, doesn't he?  What is he to do?",
+      "options": [
+        "Yes, let Cassie off the bus immediately.",
+        "No, Cassie stays on the bus like everyone else."
+      ]
+    },
+    "Afsaneh_s_Dilemma": {
+      "id": "Afsaneh_s_Dilemma",
+      "type": "multiple_choice_question_invalid",
+      "title": "Afsaneh's Dilemma:",
+      "question": "Yikes, this is not good.  Can Afsaneh get Sepideh to shut the fuck up and save her?",
+      "options": [
+        "Definitely.  Our girl's got the skills.",
+        "Absolutely not.  No way.  Uh-uh."
+      ],
+      "submission_message": "Voting can't be registered."
+    },
+    "Decision_Time": {
+      "id": "Decision_Time",
+      "type": "multiple_choice_question",
+      "title": "Decision Time:",
+      "question": "Ash is gonna get stabbed either way, and someone's gotta do it.  So, who will it be?",
+      "options": ["Gemma", "Hugo"]
+    }
   },
-  "q2": {
-    "id": "q2",
-    "title": "Doms's Decision",
-    "question": "What to do, what to do... Your boy, Dom, has got a dilemma on his hands – sit with T-Money Tarquin and Hugo, or continue gaming with his A one from day one, Jayda.",
-    "options": [
-      "Are you kidding me, it's gotta be with his bestie, Jayda.",
-      "Nah, for real for real, T-Money's got bars, so of course we're sitting with him and Hugo."
-    ]
-  }
+  "messages": {
+    "Welcome_Message": {
+      "id": "Welcome_Message",
+      "type": "messsage",
+      "title": "Welcome",
+      "subtitle": "Please wait for ..."
+    },
+    "Waiting_Message": {
+      "id": "Waiting_Message",
+      "type": "messsage",
+      "title": "Vote Submitted",
+      "subtitle": "Please wait for ..."
+    },
+    "End_Message": {
+      "id": "Waiting_Message",
+      "type": "messsage",
+      "title": "Vote Submitted",
+      "subtitle": "Thank you for participating!"
+    }
+  },
+  "play_order": [
+    "Welcome_Message",
+    "Cassie_s_Spotify",
+    "Waiting_Message",
+    "Doms_s_Decision",
+    "Waiting_Message",
+    "Darren_s_Dilemma",
+    "Waiting_Message",
+    "Afsaneh_s_Dilemma",
+    "Waiting_Message",
+    "Decision_Time",
+    "End_Message"
+  ]
 }
