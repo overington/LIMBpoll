@@ -1,13 +1,15 @@
+"use client";
 import clsx from "clsx";
 
-import Card, { CardTitle, CardSubtitle } from "@/components/Card";
-import { questions } from "@/data/questions";
-import { useQuestion } from "@/components/Questions";
+import { useState, useEffect } from "react";
+import Card, { CardTitle, CardSubtitle, QuestionCard } from "@/components/Card";
+import { questions, Question } from "@/data/questions";
+import { useCurrentQuestion} from "@/components/Questions";
 
-export default function Dashboard() {
+export function Admin({token}: {token: string}) {
   // show each question in a card, set the current question to be highlighted
   //
-  const { currentQuestionID, currentVoteCounts, setCurrentQuestion } = useQuestion();
+  const { currentQuestionID, currentVoteCounts, setCurrentQuestion } = useCurrentQuestion(token);
   return (
     <form>
       <fieldset>
@@ -49,5 +51,21 @@ export default function Dashboard() {
         </div>
       </fieldset>
     </form>
+  );
+}
+
+export function User({token}: {token: string}) {
+  const { currentQuestionID, voteHandler, isLoading, isError } = useCurrentQuestion(token);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading data</div>;
+  if (typeof currentQuestionID === "undefined") return <div>Question not found</div>;
+
+  return (
+    <QuestionCard
+      currentQuestionID={currentQuestionID}
+      token={token}
+      voteHandler={voteHandler}
+    />
   );
 }

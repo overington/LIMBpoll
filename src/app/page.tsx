@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { CurrentQuestion } from "@/components/Questions";
+import { User } from "@/components/Dashboard";
+import { USER_TOKEN } from "@/data/config";
 
 export default function HomePage() {
   return (
       <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
         <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-          <CurrentQuestion />
+          <User token={USER_TOKEN} />
         </main>
         <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
           <Link href="/">Vote</Link>
