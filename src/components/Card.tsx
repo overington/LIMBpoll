@@ -1,7 +1,6 @@
 import clsx from "clsx";
-import { API_URL } from "@/data/config";
 import { questions, type Question } from "@/data/questions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Card(props: {
   children?: React.ReactNode;
@@ -39,16 +38,21 @@ export function CardSubtitle({ children }: { children: React.ReactNode }) {
 
 export function QuestionCard({
   currentQuestionID,
-  token,
   voteHandler,
 }: {
   currentQuestionID: string;
-  token: string;
   voteHandler: (question_id: string, vote_id: string) => void;
 }) {
-  let question: Question = questions[currentQuestionID];
+  /**
+   * Warning: Assignments to the 'question' variable from inside React Hook
+   * useEffect will be lost after each render. To preserve the value over time,
+   * store it in a useRef Hook and keep the mutable value in the '.current'
+   * property. Otherwise, you can move this variable directly inside useEffect.
+   * react-hooks/exhaustive-deps
+   **/
+  const [ question, setQuestion ] = useState<Question>(questions[currentQuestionID]);
   useEffect(() => {
-    question = questions[currentQuestionID];
+    setQuestion(questions[currentQuestionID]);
   }, [currentQuestionID]);
 
   if (!question) {

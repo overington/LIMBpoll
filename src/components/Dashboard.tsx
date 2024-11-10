@@ -1,9 +1,8 @@
 "use client";
 import clsx from "clsx";
 
-import { useState, useEffect } from "react";
 import Card, { CardTitle, CardSubtitle, QuestionCard } from "@/components/Card";
-import { questions, Question } from "@/data/questions";
+import { questions } from "@/data/questions";
 import { useCurrentQuestion} from "@/components/Questions";
 
 export function Admin({token}: {token: string}) {
@@ -38,7 +37,7 @@ export function Admin({token}: {token: string}) {
                     {questions[questionID].options.map((option, index) => (
                       <li key={index} className="p-1">
                         <div className="grid grid-cols-12">
-                            {isCurrent ? <div className='col-span-1'>({currentVoteCounts[index]})</div> : ""}
+                            {isCurrent && currentVoteCounts ? <div className='col-span-1'>({currentVoteCounts[index]})</div> : ""}
                           <div className={clsx(isCurrent ? 'col-span-11' : 'col-span-12')}>{option}</div>
                         </div>
                       </li>
@@ -64,7 +63,6 @@ export function User({token}: {token: string}) {
   return (
     <QuestionCard
       currentQuestionID={currentQuestionID}
-      token={token}
       voteHandler={voteHandler}
     />
   );

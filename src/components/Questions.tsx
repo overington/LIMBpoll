@@ -1,8 +1,6 @@
 "use client";
 
-import Card, { CardTitle, CardSubtitle } from "@/components/Card";
 import useSWR from "swr";
-import { questions, Question } from "@/data/questions";
 import { API_URL } from "@/data/config";
 
 
@@ -42,13 +40,14 @@ export function useCurrentQuestion(token: string) {
   const setCurrentQuestion = async (question_id: string) => {
     try {
       console.log("Changing question to:", question_id);
-      const response = await fetch(`${API_URL}/?set_current=${question_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      // const response = await fetch(`${API_URL}/?set_current=${question_id}`, {
+      //   method: "PUT",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
+      const response = await fetcher_PUT_current_question(`${API_URL}/?set_current=${question_id}`, token);
 
       if (!response.ok) {
         console.log("Response:", response);

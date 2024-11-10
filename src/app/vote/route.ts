@@ -1,5 +1,5 @@
 import { NextRequest , NextResponse } from 'next/server';
-import { questions, type Question } from '@/data/questions';
+import { questions } from '@/data/questions';
 import { ADMIN_TOKEN, USER_TOKEN } from '@/data/config';
 
 let currentQuestionID = "q1";
@@ -7,7 +7,7 @@ let currentVoteCounts = [0, 0, 0, 0];
 
 
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     // Retrieve the current voting results (e.g., from database)
     return NextResponse.json({
         currentQuestionID: currentQuestionID,
