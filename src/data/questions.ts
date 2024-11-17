@@ -9,6 +9,9 @@ export type Question = {
 };
 export type Questions = {[key: string]: Question};
 export const questions: Questions = data["questions"];
+// vote count state
+
+
 
 export type Message = {
   id: string;

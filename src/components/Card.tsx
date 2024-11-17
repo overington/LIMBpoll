@@ -5,12 +5,18 @@ import { useEffect, useState } from "react";
 export default function Card(props: {
   children?: React.ReactNode;
   className?: string;
+  bgColour?: string;
+  textColour?: string;
 }) {
-  const { className, children } = props;
+  const { children } = props;
   const classes = clsx(
-    "items-center p-4 rounded-lg bg-slate-800 text-slate-300 shadow-lg w-full max-w-md",
-    className
+    props.bgColour ? props.bgColour : "bg-slate-800",
+    // "text-slate-300",
+    props.textColour ? props.textColour : "text-slate-300",
+    "items-center p-4 rounded-lg shadow-lg w-full max-w-md",
+    props.className? props.className : ""
   );
+  console.log("Card classes:", classes);
   return <div className={classes}>{children ? children : null}</div>;
 }
 
