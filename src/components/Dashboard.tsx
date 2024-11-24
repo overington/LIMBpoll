@@ -3,7 +3,6 @@ import clsx from "clsx";
 
 import Card, { CardTitle, CardSubtitle, QuestionCard } from "@/components/Card";
 import { questions } from "@/data/questions";
-import { API_URL } from "@/data/config";
 import { useCurrentQuestion } from "@/components/Questions";
 
 export function Button({ children, onClick, bgClass,textClass }: { children: React.ReactNode; onClick: (e: React.MouseEvent<HTMLButtonElement>) => void; bgClass?: string; textClass?: string }) {

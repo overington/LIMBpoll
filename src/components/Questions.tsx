@@ -79,6 +79,7 @@ export function useCurrentQuestion(token: string) {
   const voteHandler = async (question_id: string, vote_idx: string) => {
     try {
       const response = await fetch_POST_current_question(`${API_URL}/?question_id=${question_id}&vote_idx=${vote_idx}`, token);
+      console.log("Vote submitted successfully:", response);
       mutate();
     } catch (error) {
       console.error("Failed to submit vote:", error);

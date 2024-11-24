@@ -1,15 +1,10 @@
 import { NextRequest , NextResponse } from 'next/server';
-import { questions, type Question, play_order } from '@/data/questions';
+import { questions } from '@/data/questions';
+import { currentQuestionID, voteCount, setCurrentQuestionID, incrementVoteCount, resetVoteCount } from '@/data/state';
 import { ADMIN_TOKEN, USER_TOKEN } from '@/data/config';
-import clsx from 'clsx';
 
-let currentQuestionID = play_order[1];
- // question_id: [vote_1 (for each vote), ...], where vote_1 is the vote count for the first option
-// let currentVoteCounts = [0, 0, 0, 0];
-export const voteCount: { [key: string]: number[] } = {};
-Object.keys(questions).forEach((questionID) => {
-    voteCount[questionID] = new Array(questions[questionID].options.length).fill(0);
-});
+
+
 
 
 
@@ -25,6 +20,11 @@ export async function GET() {
 
 
 export async function POST(req: NextRequest) {
+    /**
+     * POST request to submit a vote
+     * 
+     * This function is called when a user submits a vote, and it increments the vote count for the selected option.
+     */
     console.log("POST request received", req);
     try {
         const token = req.headers.get('Authorization');
@@ -37,7 +37,8 @@ export async function POST(req: NextRequest) {
             throw new Error('Invalid question ID or vote ID');
         }
         // currentVoteCounts[parseInt(voteID)] += 1;
-        voteCount[questionID][parseInt(voteID)] += 1;
+        // voteCount[questionID][parseInt(voteID)] += 1;
+        incrementVoteCount(questionID, parseInt(voteID));
         return NextResponse.json({
             success: true,
         }, { status: 200 }); // OK
@@ -67,8 +68,9 @@ export async function PUT(req: NextRequest) {
             throw new Error('Invalid question ID');
         }
 
-        currentQuestionID = questionID;
+        // currentQuestionID = questionID;
         // currentVoteCounts = [0, 0, 0, 0];
+        setCurrentQuestionID(questionID);
 
         return NextResponse.json({
             success: true,
@@ -103,7 +105,8 @@ export async function PATCH(req: NextRequest) {
         // currentQuestionID = questionID;
         // currentVoteCounts = [0, 0, 0, 0];
         console.log("Resetting vote count for question:", questionID);
-        voteCount[currentQuestionID] = new Array(questions[currentQuestionID].options.length).fill(0);
+        // voteCount[currentQuestionID] = new Array(questions[currentQuestionID].options.length).fill(0);
+        resetVoteCount(questionID);
 
         return NextResponse.json({
             success: true,

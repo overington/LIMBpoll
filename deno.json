@@ -1,0 +1,13 @@
+{
+    "tasks": {
+        "start:build": {
+            "dependencies": ["clean", "build"],
+            "command": "next start"
+        },
+
+        "start:prod": {
+            "dependencies": ["clean", "build"],
+            "command": "deno task prod-start"
+        }
+    }
+}
