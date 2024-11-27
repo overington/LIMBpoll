@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { questions, type Question } from "@/data/questions";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Card(props: {
   children?: React.ReactNode;

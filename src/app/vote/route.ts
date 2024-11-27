@@ -11,7 +11,7 @@ import { ADMIN_TOKEN, USER_TOKEN } from '@/data/config';
 
 export async function GET() {
     // Retrieve the current voting results (e.g., from database)
-    console.log("GET request received. Sending: ", currentQuestionID, voteCount[currentQuestionID]);
+    // console.log("GET request received. Sending: ", currentQuestionID, voteCount[currentQuestionID]);
     return NextResponse.json({
         currentQuestionID: currentQuestionID,
         currentVoteCounts: voteCount[currentQuestionID],
