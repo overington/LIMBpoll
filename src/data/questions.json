@@ -1,5 +1,19 @@
 {
   "questions": {
+    "Welcome_Message": {
+      "id": "Welcome_Message",
+      "type": "message",
+      "title": "Welcome",
+      "question": "Please wait for ...",
+      "options": []
+    },
+    "Waiting_Message": {
+      "id": "Waiting_Message",
+      "type": "message",
+      "title": "Vote Submitted",
+      "question": "Please wait for ...",
+      "options": []
+    },
     "Cassie_s_Spotify": {
       "id": "Cassie_s_Spotify",
       "type": "multiple_choice_question",

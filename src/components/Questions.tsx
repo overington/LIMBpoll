@@ -97,7 +97,7 @@ export function useCurrentQuestion(token: string) {
   }
 
   return {
-    currentQuestionID: data?.currentQuestionID,
+    currentQuestionID: data?.currentQuestionID || null,
     currentVoteCounts: data?.currentVoteCounts,
     // isLoading: !error && !data,
     isLoading: isLoading,
