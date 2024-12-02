@@ -1,13 +1,19 @@
 "use client";
 
 import useSWR from "swr";
+import { type voteCountsType } from "@/data/state";
 import { API_URL } from "@/data/config";
 // import { resetVoteCount } from "./Dashboard";
 
 
 // fetcher function to get the current question
-async function fetcher_GET_current_question(url: string) {
-  const response = await fetch(url);
+async function fetcher_GET_current_question(url: string, token: string) {
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -58,9 +64,9 @@ export async function fetch_PATCH_current_question(url:string, token: string) {
 
 export function useCurrentQuestion(token: string) {
   
-  const { data, error, isLoading, isValidating, mutate } = useSWR<{ currentQuestionID: string; currentVoteCounts: number[] }>(
+  const { data, error, isLoading, isValidating, mutate } = useSWR<{ currentQuestionID: string; currentVoteCounts: number[], voteCounts: voteCountsType }>(
     API_URL,
-    (url) => fetcher_GET_current_question(url),
+    (url) => fetcher_GET_current_question(url, token),
     {
       revalidateOnFocus: true,
       refreshInterval: 5000,
@@ -98,7 +104,7 @@ export function useCurrentQuestion(token: string) {
 
   return {
     currentQuestionID: data?.currentQuestionID || null,
-    currentVoteCounts: data?.currentVoteCounts,
+    voteCounts: data?.voteCounts || null,
     // isLoading: !error && !data,
     isLoading: isLoading,
     isValidating: isValidating,

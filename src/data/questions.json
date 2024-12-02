@@ -47,7 +47,7 @@
     },
     "Afsaneh_s_Dilemma": {
       "id": "Afsaneh_s_Dilemma",
-      "type": "multiple_choice_question_invalid",
+      "type": "multiple_choice_question",
       "title": "Afsaneh's Dilemma:",
       "question": "Yikes, this is not good.  Can Afsaneh get Sepideh to shut the fuck up and save her?",
       "options": [

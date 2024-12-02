@@ -107,15 +107,16 @@ export function QuestionCard({
 
   return (
     <Card className="font-mono">
-      &gt;&gt;&gt; <span className="font-bold text-red-500">Question:</span>{" "}
-      <span>{currentQuestion.title}</span>
+      <div className="my-2">
+        &gt;&gt;&gt; <span className="font-bold text-red-500">Question - </span>{" "}
+        <span>{currentQuestion.title}</span>
+      </div>
       <p className="mx-2">{currentQuestion.question}</p>
       <p className="mx-2 text-slate-200 ">
-        (Click to submit your answer below)
       </p>
       <form>
         <fieldset>
-          <ul className="px-4 my-2">
+          <ul className="px-4 my-4">
             {currentQuestion.options?.map((option_text, index) => {
               const option_id = `option-${index}`;
               return (
@@ -131,17 +132,6 @@ export function QuestionCard({
                     />{" "}
                     {option_text}
                     </label>
-                  {/* <button
-              className="underline"
-              onClick={() =>
-                voteHandler(
-                  currentQuestionID.toString(), // question_id
-                  index.toString() // vote_id
-                )
-              }
-            >
-              {option_text}
-            </button> */}
                 </li>
               );
             })}

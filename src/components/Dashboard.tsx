@@ -2,8 +2,14 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
-import Card, { CardTitle, CardSubtitle, QuestionCard, MessageCard } from "@/components/Card";
+import Card, {
+  CardTitle,
+  CardSubtitle,
+  QuestionCard,
+  MessageCard,
+} from "@/components/Card";
 import { questions, type Question } from "@/data/questions";
+import { type voteCountsType } from "@/data/state";
 import { useCurrentQuestion } from "@/components/Questions";
 
 export function Button({
@@ -30,30 +36,61 @@ export function Button({
   );
 }
 
+export function LayoutQuestionVotes({
+  question,
+  votes,
+  bgColour,
+}: {
+  question: Question;
+  votes: number[] | null;
+  bgColour?: string;
+}) {
+  return (
+    <div>
+      <CardTitle>{question.title}</CardTitle>
+      <CardSubtitle>{question.question}</CardSubtitle>
+      {question.type === "multiple_choice_question" && (
+        <ul>
+          {question.options.map((option, index) => (
+            <li key={index} className="grid grid-cols-12">
+              <div className="col-span-1">
+                {votes === null ? "loading..." : votes[index]}
+              </div>
+              <div className="col-span-11">{option}</div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 export function AdminDashboard({ token }: { token: string }) {
-  const {
-    currentQuestionID,
-    currentVoteCounts,
-    setCurrentQuestion,
-    resetVoteCount,
-  } = useCurrentQuestion(token);
+  const { currentQuestionID, voteCounts, setCurrentQuestion, resetVoteCount } =
+    useCurrentQuestion(token);
+
+  // const current_vote_counts = voteCounts[currentQuestionID];
+  // const current_question = questions[currentQuestionID];
   return (
     <form>
       <fieldset>
         <div className={clsx("grid grid-cols-1 gap-4")}>
-          <Card>
-            <CardTitle>Questions</CardTitle>
-            <CardSubtitle>
-              Select Which Question to show (
-              <span>Chosen ID: {currentQuestionID}</span>)
-            </CardSubtitle>
-          </Card>
+          {voteCounts === null || currentQuestionID === null ? (
+            "loading..."
+          ) : (
+            <Card bgColour="bg-teal-600">
+              <LayoutQuestionVotes
+                question={questions[currentQuestionID]}
+                votes={voteCounts[currentQuestionID]}
+              />
+            </Card>
+          )}
+          <hr />
           {Object.keys(questions).map((questionID) => {
             const el_id = `admin-select-${questionID}`;
             const isCurrent = currentQuestionID === questionID;
             return (
               <label key={questionID} htmlFor={el_id}>
-                <Card bgColour={isCurrent ? "bg-emerald-700" : ""}>
+                <Card bgColour={isCurrent ? "bg-teal-600" : ""}>
                   <input
                     type="radio"
                     name="current-question"
@@ -66,9 +103,6 @@ export function AdminDashboard({ token }: { token: string }) {
                     className="hidden"
                   />
                   <Button
-                    // TODO: HERE
-
-                    // onClick={() => resetVoteCount(questionID)}
                     onClick={(e) => {
                       e.preventDefault();
                       resetVoteCount(questionID);
@@ -84,31 +118,11 @@ export function AdminDashboard({ token }: { token: string }) {
                     </svg>
                     Reset
                   </Button>
-                  <CardTitle>{questions[questionID].title}</CardTitle>
-                  <CardSubtitle>{questions[questionID].question}</CardSubtitle>
-                  <p>Options:</p>
-                  <ul className="list-disc p-4">
-                    {questions[questionID].options.map((option, index) => (
-                      <li key={index} className="p-1">
-                        <div className="grid grid-cols-12">
-                          {isCurrent && currentVoteCounts ? (
-                            <div className="col-span-1">
-                              ({currentVoteCounts[index]})
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                          <div
-                            className={clsx(
-                              isCurrent ? "col-span-11" : "col-span-12"
-                            )}
-                          >
-                            {option}
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                  <LayoutQuestionVotes
+                    question={questions[questionID]}
+                    votes={voteCounts ? voteCounts[questionID] : null}
+                    bgColour={isCurrent ? "bg-teal-600" : ""}
+                  />
                 </Card>
               </label>
             );
@@ -132,12 +146,12 @@ export function UserDashboard({ token }: { token: string }) {
   const [localQuestion, setLocalQuestion] = useState<Question | null>(null);
 
   useEffect(() => {
-    if (currentQuestionID === null) return;
-    setLocalQuestion(questions[currentQuestionID]);
+    if (currentQuestionID === null) {
+      setLocalQuestion(questions["Welcome_Message"]);
+    } else {
+      setLocalQuestion(questions[currentQuestionID]);
+    }
   }, [currentQuestionID]);
-
-
-
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
@@ -151,7 +165,6 @@ export function UserDashboard({ token }: { token: string }) {
     if (localQuestion.type === "multiple_choice_question")
       return (
         <QuestionCard
-          // currentQuestionID={currentQuestionID}
           currentQuestion={localQuestion}
           setLocalQuestion={setLocalQuestion}
           voteHandler={voteHandler}
