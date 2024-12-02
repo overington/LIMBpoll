@@ -9,7 +9,6 @@ import Card, {
   MessageCard,
 } from "@/components/Card";
 import { questions, type Question } from "@/data/questions";
-import { type voteCountsType } from "@/data/state";
 import { useCurrentQuestion } from "@/components/Questions";
 
 export function Button({
@@ -39,11 +38,9 @@ export function Button({
 export function LayoutQuestionVotes({
   question,
   votes,
-  bgColour,
 }: {
   question: Question;
   votes: number[] | null;
-  bgColour?: string;
 }) {
   return (
     <div>
@@ -121,7 +118,6 @@ export function AdminDashboard({ token }: { token: string }) {
                   <LayoutQuestionVotes
                     question={questions[questionID]}
                     votes={voteCounts ? voteCounts[questionID] : null}
-                    bgColour={isCurrent ? "bg-teal-600" : ""}
                   />
                 </Card>
               </label>

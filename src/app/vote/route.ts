@@ -3,7 +3,6 @@ import { questions } from "@/data/questions";
 import {
   currentQuestionID,
   voteCounts,
-  type voteCountsType,
   setCurrentQuestionID,
   incrementVoteCount,
   resetVoteCount,
