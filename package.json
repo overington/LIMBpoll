@@ -11,9 +11,11 @@
     "prod-start": "NODE_ENV=production PORT=80 next start"
   },
   "dependencies": {
+    "@types/qrcode": "^1.5.5",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
     "clsx": "^2.1.1",
+    "qrcode": "^1.5.4",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "swr": "^2.2.5",
