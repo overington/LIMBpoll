@@ -10,7 +10,8 @@
       "id": "Waiting_Message",
       "type": "message",
       "title": "Vote Submitted",
-      "subtitle": "Please wait for ..."
+      "question": "Counting Votes ...",
+      "options": []
     },
     {
       "id": "Afsaneh_s_Error",
