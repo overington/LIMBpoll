@@ -9,8 +9,8 @@ import Card, {
   QuestionCard,
   MessageCard,
 } from "@/components/Card";
-import { questions, type Question } from "@/data/questions";
-import { useCurrentQuestion } from "@/components/Questions";
+import { cards, Cards, type Question, type Message } from "@/data/questions";
+import { useCard } from "@/components/Questions";
 
 export function Button({
   children,
@@ -37,22 +37,26 @@ export function Button({
 }
 
 export function LayoutQuestionVotes({
-  question,
+  title,
+  subtitle,
+  options,
   votes,
 }: {
-  question: Question;
-  votes: number[] | null;
+  title: string;
+  subtitle: string;
+  options?: string[];
+  votes?: number[] | null;
 }) {
   return (
     <div>
-      <CardTitle>{question.title}</CardTitle>
-      <CardSubtitle>{question.question}</CardSubtitle>
-      {question.type === "multiple_choice_question" && (
+      <CardTitle>{title}</CardTitle>
+      <CardSubtitle>{subtitle}</CardSubtitle>
+      {options && (
         <ul>
-          {question.options.map((option, index) => (
+          {options.map((option, index) => (
             <li key={index} className="grid grid-cols-12">
               <div className="col-span-1">
-                {votes === null ? "loading..." : votes[index]}
+                {votes && votes[index]}
               </div>
               <div className="col-span-11">{option}</div>
             </li>
@@ -63,47 +67,57 @@ export function LayoutQuestionVotes({
   );
 }
 export function AdminDashboard({ token }: { token: string }) {
-  const { currentQuestionID, voteCounts, setCurrentQuestion, resetVoteCount } =
-    useCurrentQuestion(token);
-
-  // const current_vote_counts = voteCounts[currentQuestionID];
-  // const current_question = questions[currentQuestionID];
+  const { currentCardID, voteCounts, setCard, resetVoteCount, isLoading} =
+    useCard(token);
+  const [displayCard, setLocalCard] = useState<Question | Message | null>(cards['Welcome_Message']);
+  useEffect(() => {
+    if (currentCardID === null) {
+      setLocalCard(cards["Welcome_Message"]);
+    } else {
+      setLocalCard(cards[currentCardID]);
+    }
+  }, [currentCardID]);
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (displayCard === null) return <Card>No questions available</Card>;
   return (
     <form>
       <fieldset>
         <div className={clsx("grid grid-cols-1 gap-4")}>
-          {voteCounts === null || currentQuestionID === null ? (
-            "loading..."
-          ) : (
             <Card bgColour="bg-teal-600">
-              <LayoutQuestionVotes
-                question={questions[currentQuestionID]}
-                votes={voteCounts[currentQuestionID]}
-              />
+            <LayoutQuestionVotes
+              title={displayCard.title}
+              subtitle={
+              "subtitle" in displayCard
+                ? displayCard.subtitle
+                : displayCard.question
+              }
+              votes={(voteCounts && currentCardID) ? voteCounts[currentCardID] : null}
+            />
             </Card>
-          )}
           <hr />
-          {Object.keys(questions).map((questionID) => {
-            const el_id = `admin-select-${questionID}`;
-            const isCurrent = currentQuestionID === questionID;
+          {Object.values(cards).map((card) => {
+          {/* {Object.keys(cards).map((cardID) => { */}
+            const el_id = `admin-select-${card.id}`;
+            const isCurrent = currentCardID === card.id;
             return (
-              <label key={questionID} htmlFor={el_id}>
+              <label key={card.id} htmlFor={el_id}>
                 <Card bgColour={isCurrent ? "bg-teal-600" : ""}>
                   <input
                     type="radio"
                     name="current-question"
                     id={el_id}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setCurrentQuestion(e.target.value)
+                      setCard(e.target.value)
                     }
-                    value={questionID}
+                    value={card.id}
                     checked={isCurrent}
                     className="hidden"
                   />
                   <Button
                     onClick={(e) => {
                       e.preventDefault();
-                      resetVoteCount(questionID);
+                      resetVoteCount(card.id);
                     }}
                   >
                     <svg
@@ -117,8 +131,14 @@ export function AdminDashboard({ token }: { token: string }) {
                     Reset
                   </Button>
                   <LayoutQuestionVotes
-                    question={questions[questionID]}
-                    votes={voteCounts ? voteCounts[questionID] : null}
+                    title={card.title}
+                    subtitle={
+                    "subtitle" in card
+                      ? card.subtitle
+                      : card.question
+                    }
+                    options={("options" in card) ? card.options : null}
+                    votes={(voteCounts && (card.type === "multiple_choice_question")) ? voteCounts[card.id] : null}
                   />
                 </Card>
               </label>
@@ -137,31 +157,27 @@ export function UserDashboard({ token }: { token: string }) {
    * It will also handle the voting for the current question.
    */
 
-  const { currentQuestionID, voteHandler, isLoading, isError } =
-    useCurrentQuestion(token);
-
-  const [localQuestion, setLocalQuestion] = useState<Question | null>(null);
-
+  const { currentCardID, setCard, isLoading, isError} =
+    useCard(token);
+  const [displayCard, setDisplayCard] = useState<Question | Message | null>(cards['Welcome_Message']);
   useEffect(() => {
-    if (currentQuestionID === null) {
-      setLocalQuestion(questions["Welcome_Message"]);
+    if (currentCardID === null) {
+      setDisplayCard(cards["Welcome_Message"]);
     } else {
-      setLocalQuestion(questions[currentQuestionID]);
+      setDisplayCard(cards[currentCardID]);
     }
-  }, [currentQuestionID]);
+  }, [currentCardID]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
-  if (typeof currentQuestionID === "undefined")
-    return <div>Question not found</div>;
-  if (localQuestion === null) return <Card>No questions available</Card>;
+  if (displayCard === null) return <Card>No questions available</Card>;
   else {
-    if (localQuestion.type === "message")
-      return <MessageCard currentMessage={localQuestion} />;
-    if (localQuestion.type === "multiple_choice_question")
+    if (typeof displayCard === "Message")
+      return <MessageCard message={displayCard} />;
+    if (displayCard.type === "multiple_choice_question")
       return (
         <QuestionCard
-          currentQuestion={localQuestion}
+          currentQuestion={displayCard}
           setLocalQuestion={setLocalQuestion}
           voteHandler={voteHandler}
         />

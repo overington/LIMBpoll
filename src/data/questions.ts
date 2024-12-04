@@ -18,6 +18,7 @@ export type Message = {
 
 export type Questions = { [key: string]: Question };
 export type Messages = { [key: string]: Message };
+export type Cards = { [key: string]: Question | Message };
 // all items in the data['cards'] object are have the type attribute set to 'multiple_choice_question'
 
 const raw_questions = data["cards"].filter(
@@ -37,3 +38,9 @@ export const play_order: string[] = [
   ...Object.keys(messages),
   ...Object.keys(questions)
 ];
+
+export const cards : Cards = {
+  // both questions and messages are objects with keys that are strings
+  ...questions,
+  ...messages
+}

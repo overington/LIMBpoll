@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { questions, type Question } from "@/data/questions";
+import { cards, type Question,  type Message} from "@/data/questions";
 import { useState } from "react";
 
 export default function Card(props: {
@@ -41,10 +41,9 @@ export function CardSubtitle({ children }: { children: React.ReactNode }) {
   return <p className="text-2xl font-semibold text-slate-200">{children}</p>;
 }
 
-export function MessageCard({ currentMessage }: { currentMessage: Question }) {
-  // const question: Question = questions[currentMessageID]; // TODO: change to messages[currentMessageID]
+export function MessageCard({ message }: { message: Message }) {
 
-  if (!currentMessage) {
+  if (!message) {
     return (
       <Card className="font-mono">
         &gt;&gt;&gt; <span className="font-bold text-red-500">Message:</span>{" "}
@@ -52,7 +51,7 @@ export function MessageCard({ currentMessage }: { currentMessage: Question }) {
         <p className="mx-2">No message is currently selected</p>
       </Card>
     );
-  } else if (currentMessage.id === "Afsaneh_s_Error") {
+  } else if (message.id === "Afsaneh_s_Error") {
     return (
       <Card className="font-mono">
           HELLO
@@ -61,8 +60,8 @@ export function MessageCard({ currentMessage }: { currentMessage: Question }) {
             viewBox="0 0 24 24"
             ></svg>
         &gt;&gt;&gt; <span className="font-bold text-red-500">Message:</span>{" "}
-        <span>{currentMessage.title}</span>
-        <p className="mx-2">{currentMessage.question}</p>
+        <span>{message.title}</span>
+        <p className="mx-2">{message.subtitle}</p>
       </Card>
     );
   }
@@ -70,8 +69,8 @@ export function MessageCard({ currentMessage }: { currentMessage: Question }) {
   return (
     <Card className="font-mono">
       &gt;&gt;&gt; <span className="font-bold text-red-500">Message:</span>{" "}
-      <span>{currentMessage.title}</span>
-      <p className="mx-2">{currentMessage.question}</p>
+      <span>{message.title}</span>
+      <p className="mx-2">{message.question}</p>
     </Card>
   );
 }
@@ -152,9 +151,9 @@ export function QuestionCard({
                 );
                 // loading screen
                 if (currentQuestion.id === "Afsaneh_s_Dilemma") {
-                  setLocalQuestion(questions["Afsaneh_s_Error"]);
+                  setLocalQuestion(cards["Afsaneh_s_Error"]);
                 } else {
-                  setLocalQuestion(questions["Waiting_Message"]);
+                  setLocalQuestion(cards["Waiting_Message"]);
                 }
                 setChosenVote(null);
               }
