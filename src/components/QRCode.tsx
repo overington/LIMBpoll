@@ -32,7 +32,7 @@ const LIMBQRCode = ({
 }
 export default LIMBQRCode;
 
-const LIMBWiFiQRCode = ({
+const _LIMBWiFiQRCode = ({
   ssid,
   password,
   encryptionType,

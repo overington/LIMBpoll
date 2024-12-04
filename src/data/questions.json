@@ -11,7 +11,7 @@
       "id": "Waiting_Message",
       "type": "message",
       "title": "Vote Submitted",
-      "question": "Please wait for ...",
+      "question": "Counting Votes ...",
       "options": []
     },
     "Cassie_s_Spotify": {

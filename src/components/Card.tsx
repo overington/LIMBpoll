@@ -40,19 +40,22 @@ export function CardTitle({ children }: { children: React.ReactNode }) {
 export function CardSubtitle({ children }: { children: React.ReactNode }) {
   return <p className="text-2xl font-semibold text-slate-200">{children}</p>;
 }
+export function CardTitleChev({ children }: { children?: React.ReactNode | null }) {
+      return (
+      <div className="my-2 text-xl py-4">
+        <span className="font-bold text-xl my-4 text-orange-500">&gt;&gt;&gt;</span>{" "}
+        {children? children : null}
+      </div>
+      )
+}
 
-export function MessageCard({
-  currentMessage,
-}: {
-  currentMessage: Question;
-}) {
+export function MessageCard({ currentMessage }: { currentMessage: Question }) {
   // const question: Question = questions[currentMessageID]; // TODO: change to messages[currentMessageID]
 
   if (!currentMessage) {
     return (
       <Card className="font-mono">
-        &gt;&gt;&gt; <span className="font-bold text-red-500">Message:</span>{" "}
-        <span>None</span>
+      <CardTitleChev />
         <p className="mx-2">No message is currently selected</p>
       </Card>
     );
@@ -60,8 +63,11 @@ export function MessageCard({
 
   return (
     <Card className="font-mono">
-      &gt;&gt;&gt; <span className="font-bold text-red-500">Message:</span>{" "}
-      <span>{currentMessage.title}</span>
+      {/* <div className="text-xl my-4">
+        <span className="font-bold text-orange-500">&gt;&gt;&gt;</span>{" "}
+        <span>{currentMessage.title}</span>
+      </div> */}
+      <CardTitleChev>{currentMessage.title}</CardTitleChev>
       <p className="mx-2">{currentMessage.question}</p>
     </Card>
   );
@@ -84,22 +90,22 @@ export function QuestionCard({
    * property. Otherwise, you can move this variable directly inside useEffect.
    * react-hooks/exhaustive-deps
    **/
-  const [chosenVote, setChosenVote] = useState<null|string>(null);
+  const [chosenVote, setChosenVote] = useState<null | string>(null);
   // const [question, setQuestion] = useState<Question>(
   //   questions[currentQuestionID]
   // );
   // useEffect(() => {
-    // setLocalQuestion(currentQuestion);
-    // setQuestion(questions[currentQuestionID]);
-    // setChosenVote(null);
+  // setLocalQuestion(currentQuestion);
+  // setQuestion(questions[currentQuestionID]);
+  // setChosenVote(null);
   // }, [currentQuestionID]);
-
 
   if (!currentQuestion) {
     return (
       <Card className="font-mono">
-        &gt;&gt;&gt; <span className="font-bold text-red-500">Question:</span>{" "}
-        <span>None</span>
+        {/* <span className="font-bold text-xl my-4 text-orange-500">&gt;&gt;&gt;</span>{" "}
+        <span>None</span> */}
+        <CardTitleChev />
         <p className="mx-2">No question is currently selected</p>
       </Card>
     );
@@ -107,21 +113,21 @@ export function QuestionCard({
 
   return (
     <Card className="font-mono">
-      <div className="my-2">
-        &gt;&gt;&gt; <span className="font-bold text-red-500">Question - </span>{" "}
+      {/* <div className="my-2 text-xl py-4">
+        <span className="font-bold text-xl my-4 text-orange-500">&gt;&gt;&gt;</span>{" "}
         <span>{currentQuestion.title}</span>
-      </div>
-      <p className="mx-2">{currentQuestion.question}</p>
-      <p className="mx-2 text-slate-200 ">
-      </p>
+      </div> */}
+      <CardTitleChev>{currentQuestion.title}</CardTitleChev>
+      <p className="mx-2 my-4">{currentQuestion.question}</p>
+      <p className="mx-2 my-4 text-slate-200 "></p>
       <form>
         <fieldset>
           <ul className="px-4 my-4">
             {currentQuestion.options?.map((option_text, index) => {
               const option_id = `option-${index}`;
               return (
-                <li key={index}>
-                    <label className="w-full" htmlFor={option_id}>
+                <li className="my-2" key={index}>
+                  <label className="w-full" htmlFor={option_id}>
                     <input
                       type="radio"
                       name="current-answer"
@@ -131,7 +137,7 @@ export function QuestionCard({
                       onChange={() => setChosenVote(index.toString())}
                     />{" "}
                     {option_text}
-                    </label>
+                  </label>
                 </li>
               );
             })}
@@ -139,10 +145,11 @@ export function QuestionCard({
           <button
             className={clsx({
               // if chosenVote is null then bg-green else bg-slate
-              "bg-slate-500 hover:bg-slate-500 text-gray-300": chosenVote === null,
+              "bg-slate-500 hover:bg-slate-500 text-gray-300":
+                chosenVote === null,
               "bg-green-600 hover:bg-green-700 text-wite": chosenVote !== null,
               "font-bold py-2 px-4 rounded": true,
-            }) }
+            })}
             onClick={(e) => {
               e.preventDefault();
               if (chosenVote !== null) {
@@ -152,12 +159,12 @@ export function QuestionCard({
                   chosenVote // vote_id
                 );
                 // loading screen
-                setLocalQuestion(questions['Waiting_Message']);
+                setLocalQuestion(questions["Waiting_Message"]);
                 setChosenVote(null);
               }
             }}
           >
-            {chosenVote === null ? "Make a selction..." : "Submit Vote"}
+            {chosenVote === null ? "Vote Now" : "Submit Vote"}
           </button>
         </fieldset>
       </form>
