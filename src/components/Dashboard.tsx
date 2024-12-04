@@ -137,7 +137,7 @@ export function AdminDashboard({ token }: { token: string }) {
                       ? card.subtitle
                       : card.question
                     }
-                    options={("options" in card) ? card.options : null}
+                    options={(card as Question).options || []}
                     votes={(voteCounts && (card.type === "multiple_choice_question")) ? voteCounts[card.id] : null}
                   />
                 </Card>
@@ -157,7 +157,7 @@ export function UserDashboard({ token }: { token: string }) {
    * It will also handle the voting for the current question.
    */
 
-  const { currentCardID, setCard, isLoading, isError} =
+  const { currentCardID, setCard, isLoading, isError, voteHandler} =
     useCard(token);
   const [displayCard, setDisplayCard] = useState<Question | Message | null>(cards['Welcome_Message']);
   useEffect(() => {
@@ -172,15 +172,16 @@ export function UserDashboard({ token }: { token: string }) {
   if (isError) return <div>Error loading data</div>;
   if (displayCard === null) return <Card>No questions available</Card>;
   else {
-    if (typeof displayCard === "Message")
-      return <MessageCard message={displayCard} />;
-    if (displayCard.type === "multiple_choice_question")
+    if (displayCard.type === "message") {
+      return <MessageCard message={displayCard as Message} />;
+    } else {
       return (
         <QuestionCard
-          currentQuestion={displayCard}
-          setLocalQuestion={setLocalQuestion}
+          currentQuestion={displayCard as Question}
+          setLocalQuestion={setDisplayCard}
           voteHandler={voteHandler}
         />
       );
+    }
   }
 }

@@ -40,6 +40,14 @@ export function CardTitle({ children }: { children: React.ReactNode }) {
 export function CardSubtitle({ children }: { children: React.ReactNode }) {
   return <p className="text-2xl font-semibold text-slate-200">{children}</p>;
 }
+export function CardTitleChev({ children }: { children?: React.ReactNode | null }) {
+  return (
+  <div className="my-2 text-xl py-4">
+    <span className="font-bold text-xl my-4 text-orange-500">&gt;&gt;&gt;</span>{" "}
+    {children? children : null}
+  </div>
+  )
+}
 
 export function MessageCard({ message }: { message: Message }) {
 
