@@ -1,4 +1,5 @@
 "use client";
+
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
@@ -155,7 +156,6 @@ export function UserDashboard({ token }: { token: string }) {
     return <div>Question not found</div>;
   if (localQuestion === null) return <Card>No questions available</Card>;
   else {
-    console.log(localQuestion.title);
     if (localQuestion.type === "message")
       return <MessageCard currentMessage={localQuestion} />;
     if (localQuestion.type === "multiple_choice_question")

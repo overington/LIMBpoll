@@ -3,7 +3,6 @@
 import useSWR from "swr";
 import { type voteCountsType } from "@/data/state";
 import { API_URL } from "@/data/config";
-// import { resetVoteCount } from "./Dashboard";
 
 
 // fetcher function to get the current question

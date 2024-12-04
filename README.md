@@ -88,3 +88,14 @@ The app should have a simple API that the admin page can use to set the current 
 # Prompt
 
 Think carefully about the architecture, and how this could best be put together and come up with the best solution for this problem. You can use any libraries you like, but you should use NextJS as the main app driver, and you should use Typescript and Tailwind. You should also use the SWR library to submit votes, recieve questions and update the page in real time.
+
+
+
+# IP range for TVL
+
+
+
+SSID – `Link In My Bio`
+Password – `linkinmybio`
+IP Range: 172.16.0.0/16 with DHCP range from 172.16.1.0-172.16.2.250
+Server IP: 172.16.2.254
