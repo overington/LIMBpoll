@@ -157,7 +157,7 @@ export function QuestionCard({
               }
             }}
           >
-            {chosenVote === null ? "Make a selction..." : "Submit Vote"}
+            {chosenVote === null ? "Make a selection..." : "Submit Vote"}
           </button>
         </fieldset>
       </form>
