@@ -74,7 +74,7 @@ export function useCard(token: string) {
   const setCard = async (card_id: string) => {
     try {
       console.log("Changing card to:", card_id);
-      const response = await fetcher_PUT_current_question(`${API_URL}/?set_current=${card_id}`, token);
+      const response = await fetcher_PUT_current_question(`${API_URL}/?card_id=${card_id}`, token);
       console.log("Card changed successfully:", response);
       mutate();
     } catch (error) {
@@ -93,7 +93,7 @@ export function useCard(token: string) {
 
   const resetVoteCount = async (card_id: string) => {
     try {
-      const response = await fetch_PATCH_current_question(`${API_URL}/?reset_vote=${card_id}`, token);
+      const response = await fetch_PATCH_current_question(`${API_URL}/?card_id=${card_id}`, token);
       console.log("Vote count reset successfully:", response);
       mutate();
     } catch (error) {

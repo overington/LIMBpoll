@@ -41,6 +41,6 @@ export const play_order: string[] = [
 
 export const cards : Cards = {
   // both questions and messages are objects with keys that are strings
-  ...questions,
-  ...messages
+  ...messages,
+  ...questions
 }

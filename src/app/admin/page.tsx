@@ -9,17 +9,13 @@
 
 import { AdminDashboard } from "@/components/Dashboard";
 import { ADMIN_TOKEN } from "@/data/config";
-import Footer from "@/components/Footer";
+import PageLayout from "@/components/PageLayout";
 
 
 export default function AdminPage() {
-
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] bg-[url('bg.png')] bg-cover lg:bg-contain bg-top">
-        <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-          <AdminDashboard token={ADMIN_TOKEN} />
-        </main>
-        <Footer token={ADMIN_TOKEN} />
-    </div>
+  <PageLayout token={ADMIN_TOKEN}>
+    <AdminDashboard token={ADMIN_TOKEN} />
+  </PageLayout>
   );
 }

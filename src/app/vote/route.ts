@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { questions } from "@/data/questions";
+import { cards } from "@/data/questions";
 import {
-  currentQuestionID,
+  currentCardID,
   voteCounts,
-  setCurrentQuestionID,
+  setCurrentCardID,
   incrementVoteCount,
   resetVoteCount,
 } from "@/data/state";
@@ -12,17 +12,17 @@ import { ADMIN_TOKEN, USER_TOKEN } from "@/data/config";
 export async function GET(req: NextRequest) {
   // Retrieve the current voting results (e.g., from database)
   try {
-    const token = await req.headers.get("Authorization");
+    const token = req.headers.get("Authorization");
     if (token === `Bearer ${ADMIN_TOKEN}`) {
       // 
       return NextResponse.json({
-        currentQuestionID: currentQuestionID,
+        currentCardID: currentCardID,
         voteCounts: voteCounts,
       });
     } else if (token === `Bearer ${USER_TOKEN}`) {
       // USER
       return NextResponse.json({
-        currentQuestionID: currentQuestionID,
+        currentCardID: currentCardID,
       });
     } else {
       throw new Error("Invalid Token ID");
@@ -50,18 +50,16 @@ export async function POST(req: NextRequest) {
     if (token !== `Bearer ${USER_TOKEN}`) {
       throw new Error("Invalid token");
     }
-    const questionID = req.nextUrl.searchParams.get("question_id");
-    const voteID = req.nextUrl.searchParams.get("vote_idx");
+    const question_id = req.nextUrl.searchParams.get("question_id");
+    const vote_idx = req.nextUrl.searchParams.get("vote_idx");
     if (
-      questionID === null ||
-      voteID === null ||
-      questionID !== currentQuestionID
+      question_id === null ||
+      vote_idx === null ||
+      question_id !== currentCardID
     ) {
       throw new Error("Invalid question ID or vote ID");
     }
-    // currentVoteCounts[parseInt(voteID)] += 1;
-    // voteCount[questionID][parseInt(voteID)] += 1;
-    incrementVoteCount(questionID, parseInt(voteID));
+    incrementVoteCount(question_id, parseInt(vote_idx));
     return NextResponse.json(
       {
         success: true,
@@ -88,16 +86,16 @@ export async function PUT(req: NextRequest) {
     if (token !== `Bearer ${ADMIN_TOKEN}`) {
       throw new Error("Invalid token");
     }
-    const questionID = req.nextUrl.searchParams.get("set_current");
-    if (questionID === null) {
+    const card_id = req.nextUrl.searchParams.get("card_id");
+    if (card_id === null) {
+      throw new Error("Invalid ");
+    }
+
+    if (cards[card_id] === undefined) {
       throw new Error("Invalid question ID");
     }
 
-    if (questions[questionID] === undefined) {
-      throw new Error("Invalid question ID");
-    }
-
-    setCurrentQuestionID(questionID);
+    setCurrentCardID(card_id);
 
     return NextResponse.json(
       {
@@ -126,12 +124,12 @@ export async function PATCH(req: NextRequest) {
     if (token !== `Bearer ${ADMIN_TOKEN}`) {
       throw new Error("Invalid token");
     }
-    const questionID = req.nextUrl.searchParams.get("reset_vote");
+    const questionID = req.nextUrl.searchParams.get("card_id");
     if (questionID === null) {
       throw new Error("Invalid question ID");
     }
 
-    if (questions[questionID] === undefined) {
+    if (cards[questionID] === undefined) {
       throw new Error("Invalid question ID");
     }
 

@@ -1,9 +1,10 @@
-import { questions, messages, play_order } from '@/data/questions';
+import { questions, messages, play_order, cards } from '@/data/questions';
 
  // question_id: [vote_1 (for each vote), ...], where vote_1 is the vote count for the first option
 // let currentVoteCounts = [0, 0, 0, 0];
 export type voteCountsType = { [key: string]: number[] }
 export const voteCounts: voteCountsType = {};
+
 Object.keys(questions).forEach((questionID) => {
     voteCounts[questionID] = new Array(questions[questionID].options.length).fill(0);
 });
@@ -24,14 +25,14 @@ export function incrementVoteCount(questionID: string, optionIndex: number) {
 }
 
 
-export function setCurrentQuestionID(questionID: string) {
+export function setCurrentCardID(card_id: string) {
     // switch case to handle the different types of questions
-    // questions[questionID
-    if (questions[questionID] === undefined && messages[questionID] === undefined) {
+    // if (questions[card_id] === undefined && messages[card_id] === undefined) {
+    if (cards[card_id] === undefined) {
         throw new Error('Invalid question ID');
     }
-    currentQuestionID = questionID;
+    currentCardID = card_id;
 }
 
-export let currentQuestionID: string;
-setCurrentQuestionID(play_order[0]);
+export let currentCardID: string;
+setCurrentCardID(play_order[0]);
