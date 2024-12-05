@@ -10,6 +10,7 @@
 import Link from "next/link";
 import { AdminDashboard } from "@/components/Dashboard";
 import { ADMIN_TOKEN } from "@/data/config";
+import Footer from "@/components/Footer";
 
 
 export default function AdminPage() {
@@ -19,10 +20,7 @@ export default function AdminPage() {
         <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
           <AdminDashboard token={ADMIN_TOKEN} />
         </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <Link href="/">Vote</Link>
-        <Link href="/admin">admin</Link>
-      </footer>
+        <Footer token={ADMIN_TOKEN} />
     </div>
   );
 }
