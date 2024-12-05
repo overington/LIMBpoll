@@ -7,7 +7,6 @@
  *
  */
 
-import Link from "next/link";
 import { AdminDashboard } from "@/components/Dashboard";
 import { ADMIN_TOKEN } from "@/data/config";
 import Footer from "@/components/Footer";

@@ -9,7 +9,7 @@ import Card, {
   QuestionCard,
   MessageCard,
 } from "@/components/Card";
-import { cards, Cards, type Question, type Message } from "@/data/questions";
+import { cards, type Question, type Message } from "@/data/questions";
 import { useCard } from "@/components/Questions";
 
 export function Button({
@@ -157,7 +157,7 @@ export function UserDashboard({ token }: { token: string }) {
    * It will also handle the voting for the current question.
    */
 
-  const { currentCardID, setCard, isLoading, isError, voteHandler} =
+  const { currentCardID, isLoading, isError, voteHandler} =
     useCard(token);
   const [displayCard, setDisplayCard] = useState<Question | Message | null>(cards['Welcome_Message']);
   useEffect(() => {
