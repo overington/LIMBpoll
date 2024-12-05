@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import LIMBQRCode from "@/components/QRCode";
 import { PROD_ADDRESS } from "@/data/config";
 import Card from "@/components/Card";
+import Footer from "@/components/Footer";
 
 export default function InstructionsPage() {
   return (
@@ -35,11 +35,7 @@ export default function InstructionsPage() {
           <LIMBQRCode qrData={`${PROD_ADDRESS}`} />
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <Link href="/">Vote</Link>
-        <Link href="/admin">admin</Link>
-        <Link href="/connect">Connect QR Code</Link>
-      </footer>
+      <Footer token={""} />
     </div>
   );
 }

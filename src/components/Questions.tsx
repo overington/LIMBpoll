@@ -3,7 +3,6 @@
 import useSWR from "swr";
 import { type voteCountsType } from "@/data/state";
 import { API_URL } from "@/data/config";
-// import { resetVoteCount } from "./Dashboard";
 
 
 // fetcher function to get the current question
@@ -62,9 +61,9 @@ export async function fetch_PATCH_current_question(url:string, token: string) {
 }
 
 
-export function useCurrentQuestion(token: string) {
+export function useCard(token: string) {
   
-  const { data, error, isLoading, isValidating, mutate } = useSWR<{ currentQuestionID: string; currentVoteCounts: number[], voteCounts: voteCountsType }>(
+  const { data, error, isLoading, isValidating, mutate } = useSWR<{ currentCardID: string, voteCounts: voteCountsType }>(
     API_URL,
     (url) => fetcher_GET_current_question(url, token),
     {
@@ -72,19 +71,19 @@ export function useCurrentQuestion(token: string) {
       refreshInterval: 5000,
     }
   );
-  const setCurrentQuestion = async (question_id: string) => {
+  const setCard = async (card_id: string) => {
     try {
-      console.log("Changing question to:", question_id);
-      const response = await fetcher_PUT_current_question(`${API_URL}/?set_current=${question_id}`, token);
-      console.log("Question changed successfully:", response);
+      console.log("Changing card to:", card_id);
+      const response = await fetcher_PUT_current_question(`${API_URL}/?set_current=${card_id}`, token);
+      console.log("Card changed successfully:", response);
       mutate();
     } catch (error) {
-      console.error("Failed to change question:", error);
+      console.error("Failed to change card:", error);
     }
   };
-  const voteHandler = async (question_id: string, vote_idx: string) => {
+  const voteHandler = async (card_id: string, vote_idx: string) => {
     try {
-      const response = await fetch_POST_current_question(`${API_URL}/?question_id=${question_id}&vote_idx=${vote_idx}`, token);
+      const response = await fetch_POST_current_question(`${API_URL}/?question_id=${card_id}&vote_idx=${vote_idx}`, token);
       console.log("Vote submitted successfully:", response);
       mutate();
     } catch (error) {
@@ -92,9 +91,9 @@ export function useCurrentQuestion(token: string) {
     }
   }
 
-  const resetVoteCount = async (question_id: string) => {
+  const resetVoteCount = async (card_id: string) => {
     try {
-      const response = await fetch_PATCH_current_question(`${API_URL}/?reset_vote=${question_id}`, token);
+      const response = await fetch_PATCH_current_question(`${API_URL}/?reset_vote=${card_id}`, token);
       console.log("Vote count reset successfully:", response);
       mutate();
     } catch (error) {
@@ -103,13 +102,13 @@ export function useCurrentQuestion(token: string) {
   }
 
   return {
-    currentQuestionID: data?.currentQuestionID || null,
+    currentCardID: data?.currentCardID || null,
     voteCounts: data?.voteCounts || null,
     // isLoading: !error && !data,
     isLoading: isLoading,
     isValidating: isValidating,
     isError: error,
-    setCurrentQuestion,
+    setCard: setCard,
     resetVoteCount: resetVoteCount,
     voteHandler: voteHandler,
   };

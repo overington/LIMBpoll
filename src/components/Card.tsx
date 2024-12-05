@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { questions, type Question } from "@/data/questions";
+import { cards, type Question,  type Message} from "@/data/questions";
 import { useState } from "react";
 
 export default function Card(props: {
@@ -41,34 +41,43 @@ export function CardSubtitle({ children }: { children: React.ReactNode }) {
   return <p className="text-2xl font-semibold text-slate-200">{children}</p>;
 }
 export function CardTitleChev({ children }: { children?: React.ReactNode | null }) {
-      return (
-      <div className="my-2 text-xl py-4">
-        <span className="font-bold text-xl my-4 text-orange-500">&gt;&gt;&gt;</span>{" "}
-        {children? children : null}
-      </div>
-      )
+  return (
+  <div className="my-2 text-xl py-4">
+    <span className="font-bold text-xl my-4 text-orange-500">&gt;&gt;&gt;</span>{" "}
+    {children? children : null}
+  </div>
+  )
 }
 
-export function MessageCard({ currentMessage }: { currentMessage: Question }) {
-  // const question: Question = questions[currentMessageID]; // TODO: change to messages[currentMessageID]
+export function MessageCard({ message }: { message: Message }) {
 
-  if (!currentMessage) {
+  if (!message) {
     return (
       <Card className="font-mono">
       <CardTitleChev />
         <p className="mx-2">No message is currently selected</p>
       </Card>
     );
+  } else if (message.id === "Afsaneh_s_Error") {
+    return (
+      <Card className="font-mono">
+          HELLO
+            <svg
+            className="animate-spin h-5 w-5 mr-3 stroke-red-500"
+            viewBox="0 0 24 24"
+            ></svg>
+        &gt;&gt;&gt; <span className="font-bold text-red-500">Message:</span>{" "}
+        <span>{message.title}</span>
+        <p className="mx-2">{message.subtitle}</p>
+      </Card>
+    );
   }
 
   return (
     <Card className="font-mono">
-      {/* <div className="text-xl my-4">
-        <span className="font-bold text-orange-500">&gt;&gt;&gt;</span>{" "}
-        <span>{currentMessage.title}</span>
-      </div> */}
-      <CardTitleChev>{currentMessage.title}</CardTitleChev>
-      <p className="mx-2">{currentMessage.question}</p>
+      &gt;&gt;&gt; <span className="font-bold text-red-500">Message:</span>{" "}
+      <span>{message.title}</span>
+      <p className="mx-2">{message.question}</p>
     </Card>
   );
 }
@@ -80,7 +89,6 @@ export function QuestionCard({
 }: {
   currentQuestion: Question;
   setLocalQuestion: (question: Question) => void;
-  // currentQuestionID: string;
   voteHandler: (question_id: string, vote_id: string) => void;
 }) {
   /**
@@ -91,14 +99,6 @@ export function QuestionCard({
    * react-hooks/exhaustive-deps
    **/
   const [chosenVote, setChosenVote] = useState<null | string>(null);
-  // const [question, setQuestion] = useState<Question>(
-  //   questions[currentQuestionID]
-  // );
-  // useEffect(() => {
-  // setLocalQuestion(currentQuestion);
-  // setQuestion(questions[currentQuestionID]);
-  // setChosenVote(null);
-  // }, [currentQuestionID]);
 
   if (!currentQuestion) {
     return (
@@ -159,7 +159,11 @@ export function QuestionCard({
                   chosenVote // vote_id
                 );
                 // loading screen
-                setLocalQuestion(questions["Waiting_Message"]);
+                if (currentQuestion.id === "Afsaneh_s_Dilemma") {
+                  setLocalQuestion(cards["Afsaneh_s_Error"]);
+                } else {
+                  setLocalQuestion(cards["Waiting_Message"]);
+                }
                 setChosenVote(null);
               }
             }}

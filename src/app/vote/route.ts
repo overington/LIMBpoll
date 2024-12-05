@@ -12,7 +12,7 @@ import { ADMIN_TOKEN, USER_TOKEN } from "@/data/config";
 export async function GET(req: NextRequest) {
   // Retrieve the current voting results (e.g., from database)
   try {
-    const token = req.headers.get("Authorization");
+    const token = await req.headers.get("Authorization");
     if (token === `Bearer ${ADMIN_TOKEN}`) {
       // 
       return NextResponse.json({
@@ -38,7 +38,6 @@ export async function GET(req: NextRequest) {
     ); // Internal Server Error
   }
 }
-
 export async function POST(req: NextRequest) {
   /**
    * POST request to submit a vote

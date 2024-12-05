@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Footer from "@/components/Footer";
 import { UserDashboard } from "@/components/Dashboard";
 import { USER_TOKEN } from "@/data/config";
 
@@ -8,10 +8,7 @@ export default function HomePage() {
         <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
           <UserDashboard token={USER_TOKEN} />
         </main>
-        <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-          {/* <Link href="/">Vote</Link> */}
-          {/* <Link href="/admin">admin</Link> */}
-        </footer>
+        <Footer token={USER_TOKEN} />
       </div>
   );
 }
