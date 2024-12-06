@@ -1,4 +1,4 @@
-import { questions, messages, play_order, cards } from '@/data/questions';
+import { questions, play_order, cards } from '@/data/questions';
 
  // question_id: [vote_1 (for each vote), ...], where vote_1 is the vote count for the first option
 // let currentVoteCounts = [0, 0, 0, 0];
@@ -25,14 +25,14 @@ export function incrementVoteCount(questionID: string, optionIndex: number) {
 }
 
 
-export function setCurrentCardID(card_id: string) {
+export let globalCardID: string;
+export function setGlobalCardID(card_id: string) {
     // switch case to handle the different types of questions
     // if (questions[card_id] === undefined && messages[card_id] === undefined) {
     if (cards[card_id] === undefined) {
         throw new Error('Invalid question ID');
     }
-    currentCardID = card_id;
+    console.log('Setting global card ID to:', card_id);
+    globalCardID = card_id;
 }
-
-export let currentCardID: string;
-setCurrentCardID(play_order[0]);
+setGlobalCardID(play_order[0]);

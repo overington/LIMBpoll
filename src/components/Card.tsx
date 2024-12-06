@@ -1,5 +1,9 @@
 import clsx from "clsx";
-import { cards, type Question,  type Message} from "@/data/questions";
+import {
+  type Question,
+  type Message,
+  postvoted_card_id,
+} from "@/data/questions";
 import { useState } from "react";
 
 export default function Card(props: {
@@ -40,55 +44,45 @@ export function CardTitle({ children }: { children: React.ReactNode }) {
 export function CardSubtitle({ children }: { children: React.ReactNode }) {
   return <p className="text-2xl font-semibold text-slate-200">{children}</p>;
 }
-export function CardTitleChev({ children }: { children?: React.ReactNode | null }) {
+export function CardTitleChev({
+  children,
+}: {
+  children?: React.ReactNode | null;
+}) {
   return (
-  <div className="my-2 text-xl py-4">
-    <span className="font-bold text-xl my-4 text-orange-500">&gt;&gt;&gt;</span>{" "}
-    {children? children : null}
-  </div>
-  )
+    <div className="my-2 text-xl py-4">
+      <span className="font-bold text-xl my-4 text-orange-500">
+        &gt;&gt;&gt;
+      </span>{" "}
+      {children ? children : null}
+    </div>
+  );
 }
 
 export function MessageCard({ message }: { message: Message }) {
-
   if (!message) {
     return (
       <Card className="font-mono">
-      <CardTitleChev />
-        <p className="mx-2">No message is currently selected</p>
-      </Card>
-    );
-  } else if (message.id === "Afsaneh_s_Error") {
-    return (
-      <Card className="font-mono">
-          HELLO
-            <svg
-            className="animate-spin h-5 w-5 mr-3 stroke-red-500"
-            viewBox="0 0 24 24"
-            ></svg>
-        &gt;&gt;&gt; <span className="font-bold text-red-500">Message:</span>{" "}
-        <span>{message.title}</span>
-        <p className="mx-2">{message.subtitle}</p>
+        <CardTitleChev> No message is currently selected </CardTitleChev>
       </Card>
     );
   }
-
   return (
     <Card className="font-mono">
-      &gt;&gt;&gt; <span className="font-bold text-red-500">Message:</span>{" "}
-      <span>{message.title}</span>
-      <p className="mx-2">{message.question}</p>
+      {(message.id === "Afsaneh_s_Error") ?  <svg className="animate-spin h-5 w-5 mr-3 stroke-red-500" viewBox="0 0 24 24" ></svg> : null }
+      <CardTitleChev> {message.title}</CardTitleChev>
+      <p className="mx-2">{message.subtitle}</p>
     </Card>
   );
 }
+
 export function QuestionCard({
   currentQuestion,
-  setLocalQuestion,
-  // currentQuestionID,
+  setLocalCardID,
   voteHandler,
 }: {
   currentQuestion: Question;
-  setLocalQuestion: (question: Question) => void;
+  setLocalCardID: (card_id: string) => void;
   voteHandler: (question_id: string, vote_id: string) => void;
 }) {
   /**
@@ -98,25 +92,18 @@ export function QuestionCard({
    * property. Otherwise, you can move this variable directly inside useEffect.
    * react-hooks/exhaustive-deps
    **/
-  const [chosenVote, setChosenVote] = useState<null | string>(null);
+  const [chosen_vote_id, set_chosen_vote_id] = useState<null | string>(null);
 
   if (!currentQuestion) {
     return (
       <Card className="font-mono">
-        {/* <span className="font-bold text-xl my-4 text-orange-500">&gt;&gt;&gt;</span>{" "}
-        <span>None</span> */}
-        <CardTitleChev />
-        <p className="mx-2">No question is currently selected</p>
+        <CardTitleChev>No question is currently selected</CardTitleChev>
       </Card>
     );
   }
 
   return (
     <Card className="font-mono">
-      {/* <div className="my-2 text-xl py-4">
-        <span className="font-bold text-xl my-4 text-orange-500">&gt;&gt;&gt;</span>{" "}
-        <span>{currentQuestion.title}</span>
-      </div> */}
       <CardTitleChev>{currentQuestion.title}</CardTitleChev>
       <p className="mx-2 my-4">{currentQuestion.question}</p>
       <p className="mx-2 my-4 text-slate-200 "></p>
@@ -134,7 +121,7 @@ export function QuestionCard({
                       id={option_id}
                       value={index}
                       className="mr-2"
-                      onChange={() => setChosenVote(index.toString())}
+                      onChange={() => set_chosen_vote_id(index.toString())}
                     />{" "}
                     {option_text}
                   </label>
@@ -146,29 +133,30 @@ export function QuestionCard({
             className={clsx({
               // if chosenVote is null then bg-green else bg-slate
               "bg-slate-500 hover:bg-slate-500 text-gray-300":
-                chosenVote === null,
-              "bg-green-600 hover:bg-green-700 text-wite": chosenVote !== null,
+                chosen_vote_id === null,
+              "bg-green-600 hover:bg-green-700 text-wite":
+                chosen_vote_id !== null,
               "font-bold py-2 px-4 rounded": true,
             })}
             onClick={(e) => {
               e.preventDefault();
-              if (chosenVote !== null) {
+              if (chosen_vote_id !== null) {
                 voteHandler(
                   currentQuestion.id,
-                  // currentQuestionID.toString(), // question_id
-                  chosenVote // vote_id
+                  chosen_vote_id // vote_id
                 );
-                // loading screen
+                // After vote submitted, set the card to voted card, or the next card
                 if (currentQuestion.id === "Afsaneh_s_Dilemma") {
-                  setLocalQuestion(cards["Afsaneh_s_Error"]);
+                  setLocalCardID("Afsaneh_s_Error");
                 } else {
-                  setLocalQuestion(cards["Waiting_Message"]);
+                  console.log("Setting local card to:", postvoted_card_id);
+                  setLocalCardID(postvoted_card_id);
                 }
-                setChosenVote(null);
+                set_chosen_vote_id(chosen_vote_id);
               }
             }}
           >
-            {chosenVote === null ? "Vote Now" : "Submit Vote"}
+            {chosen_vote_id === null ? "Vote Now" : "Submit Vote"}
           </button>
         </fieldset>
       </form>

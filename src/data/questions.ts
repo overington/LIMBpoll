@@ -44,3 +44,6 @@ export const cards : Cards = {
   ...messages,
   ...questions
 }
+
+export const initial_card_id = "Doms_s_Decision";
+export const postvoted_card_id = "Waiting_Message"

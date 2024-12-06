@@ -1,8 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import { useEffect, useState } from "react";
-
 import Card, {
   CardTitle,
   CardSubtitle,
@@ -67,39 +65,31 @@ export function LayoutQuestionVotes({
   );
 }
 export function AdminDashboard({ token }: { token: string }) {
-  const { currentCardID, voteCounts, setCard, resetVoteCount, isLoading} =
-    useCard(token);
-  const [displayCard, setLocalCard] = useState<Question | Message | null>(cards['Welcome_Message']);
-  useEffect(() => {
-    if (currentCardID === null) {
-      setLocalCard(cards["Welcome_Message"]);
-    } else {
-      setLocalCard(cards[currentCardID]);
-    }
-  }, [currentCardID]);
+  const { localCard, voteCounts, setGlobalCardID: setCard, resetVoteCount, isLoading} = useCard(token);
+
   
   if (isLoading) return <div>Loading...</div>;
-  if (displayCard === null) return <Card>No questions available</Card>;
+  if (localCard === null) return <Card>No questions available</Card>;
   return (
     <form>
       <fieldset>
         <div className={clsx("grid grid-cols-1 gap-4")}>
             <Card bgColour="bg-teal-600">
             <LayoutQuestionVotes
-              title={displayCard.title}
+              title={localCard.title}
               subtitle={
-              "subtitle" in displayCard
-                ? displayCard.subtitle
-                : displayCard.question
+              "subtitle" in localCard
+                ? localCard.subtitle
+                : localCard.question
               }
-              votes={(voteCounts && currentCardID) ? voteCounts[currentCardID] : null}
+              votes={(voteCounts && localCard.type === "multiple_choice_question") ? voteCounts[localCard.id] : null}
             />
             </Card>
           <hr />
           {Object.values(cards).map((card) => {
           {/* {Object.keys(cards).map((cardID) => { */}
             const el_id = `admin-select-${card.id}`;
-            const isCurrent = currentCardID === card.id;
+            const isCurrent = localCard.id === card.id;
             return (
               <label key={card.id} htmlFor={el_id}>
                 <Card bgColour={isCurrent ? "bg-teal-600" : ""}>
@@ -157,28 +147,20 @@ export function UserDashboard({ token }: { token: string }) {
    * It will also handle the voting for the current question.
    */
 
-  const { currentCardID, isLoading, isError, voteHandler} =
+  const { localCard, setLocalCardID, isLoading, isError, voteHandler} =
     useCard(token);
-  const [displayCard, setDisplayCard] = useState<Question | Message | null>(cards['Welcome_Message']);
-  useEffect(() => {
-    if (currentCardID === null) {
-      setDisplayCard(cards["Welcome_Message"]);
-    } else {
-      setDisplayCard(cards[currentCardID]);
-    }
-  }, [currentCardID]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
-  if (displayCard === null) return <Card>No questions available</Card>;
+  if (localCard === null) return <Card>No questions available</Card>;
   else {
-    if (displayCard.type === "message") {
-      return <MessageCard message={displayCard as Message} />;
+    if (localCard.type === "message") {
+      return <MessageCard message={localCard as Message} />;
     } else {
       return (
         <QuestionCard
-          currentQuestion={displayCard as Question}
-          setLocalQuestion={setDisplayCard}
+          currentQuestion={localCard as Question}
+          setLocalCardID={setLocalCardID}
           voteHandler={voteHandler}
         />
       );

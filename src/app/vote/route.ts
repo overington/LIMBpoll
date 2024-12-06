@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cards } from "@/data/questions";
 import {
-  currentCardID,
+  globalCardID,
   voteCounts,
-  setCurrentCardID,
+  setGlobalCardID,
   incrementVoteCount,
   resetVoteCount,
 } from "@/data/state";
@@ -13,16 +13,17 @@ export async function GET(req: NextRequest) {
   // Retrieve the current voting results (e.g., from database)
   try {
     const token = req.headers.get("Authorization");
+    console.log("GET request received, sending globalCardID:", globalCardID);
     if (token === `Bearer ${ADMIN_TOKEN}`) {
       // 
       return NextResponse.json({
-        currentCardID: currentCardID,
+        globalCardID: globalCardID,
         voteCounts: voteCounts,
       });
     } else if (token === `Bearer ${USER_TOKEN}`) {
       // USER
       return NextResponse.json({
-        currentCardID: currentCardID,
+        globalCardID: globalCardID,
       });
     } else {
       throw new Error("Invalid Token ID");
@@ -55,7 +56,7 @@ export async function POST(req: NextRequest) {
     if (
       question_id === null ||
       vote_idx === null ||
-      question_id !== currentCardID
+      question_id !== globalCardID
     ) {
       throw new Error("Invalid question ID or vote ID");
     }
@@ -95,7 +96,7 @@ export async function PUT(req: NextRequest) {
       throw new Error("Invalid question ID");
     }
 
-    setCurrentCardID(card_id);
+    setGlobalCardID(card_id);
 
     return NextResponse.json(
       {

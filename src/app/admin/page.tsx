@@ -8,8 +8,8 @@
  */
 
 import { AdminDashboard } from "@/components/Dashboard";
-import { ADMIN_TOKEN } from "@/data/config";
 import PageLayout from "@/components/PageLayout";
+import { ADMIN_TOKEN } from "@/data/config";
 
 
 export default function AdminPage() {
