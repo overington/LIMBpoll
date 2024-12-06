@@ -6,19 +6,22 @@ import {
   setGlobalCardID,
   incrementVoteCount,
   resetVoteCount,
+  incrementConnectionCount,
+  getConnectionCount
 } from "@/data/state";
 import { ADMIN_TOKEN, USER_TOKEN } from "@/data/config";
 
 export async function GET(req: NextRequest) {
   // Retrieve the current voting results (e.g., from database)
   try {
+    incrementConnectionCount();
     const token = req.headers.get("Authorization");
-    console.log("GET request received, sending globalCardID:", globalCardID);
     if (token === `Bearer ${ADMIN_TOKEN}`) {
       // 
       return NextResponse.json({
         globalCardID: globalCardID,
         voteCounts: voteCounts,
+        connectionCount: getConnectionCount(),
       });
     } else if (token === `Bearer ${USER_TOKEN}`) {
       // USER

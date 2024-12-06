@@ -1,7 +1,5 @@
 import { questions, play_order, cards } from '@/data/questions';
 
- // question_id: [vote_1 (for each vote), ...], where vote_1 is the vote count for the first option
-// let currentVoteCounts = [0, 0, 0, 0];
 export type voteCountsType = { [key: string]: number[] }
 export const voteCounts: voteCountsType = {};
 
@@ -36,3 +34,15 @@ export function setGlobalCardID(card_id: string) {
     globalCardID = card_id;
 }
 setGlobalCardID(play_order[0]);
+let connection_count = 0;
+export function incrementConnectionCount() {
+    connection_count++;
+}
+export function getConnectionCount() {
+    return connection_count;
+}
+
+// reset the count every 5 seconds
+setInterval(() => {
+    connection_count = 0;
+}, 4995);

@@ -60,32 +60,14 @@ export async function fetch_PATCH_current_question(url: string, token: string) {
   return response.json();
 }
 
-type ServerVoteDataType = { globalCardID: string; voteCounts: voteCountsType; }
+type ServerVoteDataType = { globalCardID: string; voteCounts: voteCountsType; connectionCount?: number };
 
-// export function useLocalCard(data_to_watch: string) {
-//   const [localCardID, setLocalCardID] = useState<string | null>(initial_card_id || null);
-//   const [localCard, setLocalCard] = useState<Question | Message >(cards[initial_card_id]);
-//   useEffect(() => {
-//     console.log("Local card changing to:", data_to_watch);
-//     if (localCardID === null) {
-//       setLocalCard(cards[initial_card_id]);
-//     } else {
-//       setLocalCard(cards[data_to_watch]);
-//     }
-//   }, [localCardID, data_to_watch]);
-//   return {
-//     localCardID: localCardID,
-//     setLocalCardID: setLocalCardID,
-//     localCard: localCard,
-//     setLocalCard: setLocalCard, // Don't use this directly, use setLocalCardID instead
-//   }
-// }
 export function useCard(token: string) {
   const { data, error, isLoading, isValidating, mutate } = useSWR<ServerVoteDataType>(API_URL, (url: string) => fetcher_GET_current_question(url, token), {
     revalidateOnFocus: true,
     refreshInterval: 5000,
   });
-  const { globalCardID } = data || { globalCardID: initial_card_id, voteCounts: null };
+  const { globalCardID } = data || { globalCardID: initial_card_id, voteCounts: null, connectionCount: 0 };
   const setGlobalCardID = async (card_id: string) => {
     try {
       console.log("Changing card to:", card_id);
@@ -143,6 +125,7 @@ export function useCard(token: string) {
 
   return {
     voteCounts: data?.voteCounts || null,
+    connectionCount: data?.connectionCount || null,
     isLoading: isLoading,
     isValidating: isValidating,
     isError: error,

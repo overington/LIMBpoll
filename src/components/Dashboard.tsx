@@ -52,42 +52,71 @@ export function LayoutQuestionVotes({
       {options && (
         <ul>
           {options.map((option, index) => (
-            <li key={index} className="grid grid-cols-12">
-              <div className="col-span-1">
+            <li
+              key={index}
+              className={clsx(
+                "grid grid-cols-12 border-orange-500 border-dashed border-t"
+              )}
+            >
+              <div className="col-span-1 border-r border-orange-500">
                 {votes && votes[index]}
               </div>
               <div className="col-span-11">{option}</div>
             </li>
           ))}
+          <li className="grid grid-cols-12 font-bold border-orange-500 border-t-2">
+            <div className="col-span-1 ">
+              {votes && votes.reduce((a, b) => a + b, 0)}
+            </div>
+            <div className="col-span-11">Total</div>
+          </li>
         </ul>
       )}
     </div>
   );
 }
 export function AdminDashboard({ token }: { token: string }) {
-  const { localCard, voteCounts, setGlobalCardID: setCard, resetVoteCount, isLoading} = useCard(token);
+  const {
+    localCard,
+    voteCounts,
+    connectionCount,
+    setGlobalCardID,
+    resetVoteCount,
+    isLoading,
+  } = useCard(token);
 
-  
   if (isLoading) return <div>Loading...</div>;
   if (localCard === null) return <Card>No questions available</Card>;
   return (
     <form>
       <fieldset>
         <div className={clsx("grid grid-cols-1 gap-4")}>
-            <Card bgColour="bg-teal-600">
+          <Card bgColour="bg-teal-600">
             <LayoutQuestionVotes
               title={localCard.title}
               subtitle={
-              "subtitle" in localCard
-                ? localCard.subtitle
-                : localCard.question
+                "subtitle" in localCard
+                  ? localCard.subtitle
+                  : localCard.question
               }
-              votes={(voteCounts && localCard.type === "multiple_choice_question") ? voteCounts[localCard.id] : null}
+              votes={
+                voteCounts && localCard.type === "multiple_choice_question"
+                  ? voteCounts[localCard.id]
+                  : null
+              }
             />
-            </Card>
+          </Card>
+          <Card bgColour="bg-teal-600">
+            <div className="grid grid-cols-12">
+              <div className="col-span-1">{connectionCount}</div>
+              <div className="col-span-11">Connections</div>
+            </div>
+          </Card>
           <hr />
           {Object.values(cards).map((card) => {
-          {/* {Object.keys(cards).map((cardID) => { */}
+            {
+              /* {Object.keys(cards).map((cardID) => { */
+            }
             const el_id = `admin-select-${card.id}`;
             const isCurrent = localCard.id === card.id;
             return (
@@ -98,7 +127,7 @@ export function AdminDashboard({ token }: { token: string }) {
                     name="current-question"
                     id={el_id}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setCard(e.target.value)
+                      setGlobalCardID(e.target.value)
                     }
                     value={card.id}
                     checked={isCurrent}
@@ -123,12 +152,14 @@ export function AdminDashboard({ token }: { token: string }) {
                   <LayoutQuestionVotes
                     title={card.title}
                     subtitle={
-                    "subtitle" in card
-                      ? card.subtitle
-                      : card.question
+                      "subtitle" in card ? card.subtitle : card.question
                     }
                     options={(card as Question).options || []}
-                    votes={(voteCounts && (card.type === "multiple_choice_question")) ? voteCounts[card.id] : null}
+                    votes={
+                      voteCounts && card.type === "multiple_choice_question"
+                        ? voteCounts[card.id]
+                        : null
+                    }
                   />
                 </Card>
               </label>
@@ -147,7 +178,7 @@ export function UserDashboard({ token }: { token: string }) {
    * It will also handle the voting for the current question.
    */
 
-  const { localCard, setLocalCardID, isLoading, isError, voteHandler} =
+  const { localCard, setLocalCardID, isLoading, isError, voteHandler } =
     useCard(token);
 
   if (isLoading) return <div>Loading...</div>;
