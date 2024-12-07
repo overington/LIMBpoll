@@ -1,14 +1,4 @@
-- [ ] Run prod without port?
-- [ ] Add QRcode code
+# Afsaneh's error
+- [x] loading graphic
+- [x] leads back to Afsaneh's voting page with loop
 
-# Admin dashboard
-
-- [ ] integrate messages type (not just voting type)
-
-
-# User dashboard
-
-- [ ] after vote page (submitting vote spinner)
-- [ ] Make voting button more visible
-- [ ] waiting page
-- [ ] manual refresh button

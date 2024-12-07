@@ -4,13 +4,20 @@
       "id": "Welcome_Message",
       "type": "message",
       "title": "Welcome",
-      "subtitle": "Please wait for ..."
+      "subtitle": "You have successfully connected. Please wait for further instructions ..."
+    },
+    {
+      "id": "Counting_Message",
+      "type": "message",
+      "title": "Vote Submitted",
+      "subtitle": "Counting Votes ...",
+      "options": []
     },
     {
       "id": "Waiting_Message",
       "type": "message",
-      "title": "Vote Submitted",
-      "question": "Counting Votes ...",
+      "title": "Waiting",
+      "subtitle": "Please check back later ...",
       "options": []
     },
     {

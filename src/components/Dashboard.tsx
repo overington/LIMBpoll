@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import clsx from "clsx";
 import Card, {
   CardTitle,
@@ -180,12 +181,26 @@ export function UserDashboard({ token }: { token: string }) {
 
   const { localCard, setLocalCardID, isLoading, isError, voteHandler } =
     useCard(token);
+  const [count, setCount] = useState<number>(5000);
+  const reduceCount = (amount: number) => {
+    setCount(Math.max(count - amount, 200));
+  }
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading data</div>;
   if (localCard === null) return <Card>No questions available</Card>;
   else {
     if (localCard.type === "message") {
+      // if Afsaneh_s_Error then count to 5 then set back to Afsaneh_s_Dilemma,
+      // then reduce the count by 2, with a minimum of 0.1
+      if (localCard.id === "Afsaneh_s_Error") {
+        setTimeout(() => {
+          setLocalCardID("Afsaneh_s_Dilemma");
+          reduceCount(500);
+        }, count);
+      }
+
+
       return <MessageCard message={localCard as Message} />;
     } else {
       return (

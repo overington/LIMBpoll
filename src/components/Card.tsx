@@ -58,7 +58,34 @@ export function CardTitleChev({
     </div>
   );
 }
-
+export function LoadingButton() {
+  return (
+      <div className="flex items-center justify-center">
+      <div className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm transition ease-in-out duration-150 cursor-not-allowed">
+        <svg
+          className="animate-spin -ml-1 mr-3 h-12 w-12 text-white "
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+      </div>
+      </div>
+  );
+}
 export function MessageCard({ message }: { message: Message }) {
   if (!message) {
     return (
@@ -66,16 +93,31 @@ export function MessageCard({ message }: { message: Message }) {
         <CardTitleChev> No message is currently selected </CardTitleChev>
       </Card>
     );
+  } else if (message.id === "Afsaneh_s_Error") {
+    // count to 5 then set back to Afsaneh_s_Dilemma
+    return (
+      <Card className="font-mono">
+        <LoadingButton />
+        <CardTitleChev> {message.title}</CardTitleChev>
+        <p className="mx-2">{message.subtitle}</p>
+      </Card>
+    );
   }
   return (
     <Card className="font-mono">
-      {(message.id === "Afsaneh_s_Error") ?  <svg className="animate-spin h-5 w-5 mr-3 stroke-red-500" viewBox="0 0 24 24" ></svg> : null }
       <CardTitleChev> {message.title}</CardTitleChev>
       <p className="mx-2">{message.subtitle}</p>
     </Card>
   );
 }
-
+function button_style(chosen_vote_id: string | null) {
+  return {
+    // if chosenVote is null then bg-green else bg-slate
+    "bg-slate-500 hover:bg-slate-500 text-gray-300": chosen_vote_id === null,
+    "bg-green-600 hover:bg-green-700 text-wite": chosen_vote_id !== null,
+    "font-bold py-2 px-4 rounded": true,
+  };
+}
 export function QuestionCard({
   currentQuestion,
   setLocalCardID,
@@ -130,14 +172,7 @@ export function QuestionCard({
             })}
           </ul>
           <button
-            className={clsx({
-              // if chosenVote is null then bg-green else bg-slate
-              "bg-slate-500 hover:bg-slate-500 text-gray-300":
-                chosen_vote_id === null,
-              "bg-green-600 hover:bg-green-700 text-wite":
-                chosen_vote_id !== null,
-              "font-bold py-2 px-4 rounded": true,
-            })}
+            className={clsx(button_style(chosen_vote_id))}
             onClick={(e) => {
               e.preventDefault();
               if (chosen_vote_id !== null) {
@@ -156,7 +191,7 @@ export function QuestionCard({
               }
             }}
           >
-            {chosen_vote_id === null ? "Vote Now" : "Submit Vote"}
+            {chosen_vote_id === null ? "Please select an option..." : "Submit Vote"}
           </button>
         </fieldset>
       </form>
