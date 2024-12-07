@@ -23,42 +23,41 @@
       "id": "Cassie_s_Spotify",
       "type": "multiple_choice_question",
       "title": "Cassie's Spotify:",
-      "question": "Alright, alright, DJ CASSIE CAS with the aux cord, trying to get something popping with 3 banging tracks. What we listening to, fam? Say your piece, now.",
+      "question": "[EN] Alright, alright, DJ CASSIE CAS with the aux cord, trying to get something popping with 3 banging tracks. What we listening to, fam? Say your piece, now. [FR] OK, DJ CASSIE CAS aux platines qui chauffe l'ambiance avec 3 morceaux qui déchirent. On écoute quoi, la mifa ? Faites votre choix.",
       "options": [
-        "Tune!!!",
-        "Oh, I'm feeling this.",
-        "Aye!!!!  This and no other."
+        "Tune!!! / Balance le son !",
+        "Aye!!!!  This and no other. / Chanmé! Ça et rien d'autre."
       ]
     },
     {
       "id": "Doms_s_Decision",
       "type": "multiple_choice_question",
       "title": "Doms's Decision:",
-      "question": "What to do, what to do... Your boy, Dom, has got a dilemma on his hands - sit with T-Money Tarquin and Hugo, or continue gaming with his A one from day one, Jayda.",
+      "question": "[EN] What to do, what to do... Your boy, Dom, has got a dilemma on his hands - sit with T-Money Tarquin and Hugo, or continue gaming with his A one from day one, Jayda. [FR] Que faire ? Ton garçon, Dom, a un dilemme : s'asseoir avec T-Money Tarquin et Hugo, ou continuer de jouer avec sa meilleure pote, Jayda.",
       "options": [
-        "Are you kidding me, it's gotta be with his bestie, Jayda.",
-        "Nah, for real for real, T-Money's got bars, so of course we're sitting with him and Hugo."
+        "Are you kidding me, it's gotta be with his bestie, Jayda. / Tu plaisantes, il doit rester avec sa BFF, Jayda.",
+        "Nah, for real for real, T-Money's got bars, so of course we're sitting with him and Hugo. / Non, T-Money rappe comme un Dieu, alors on s'assoit avec Hugo et lui."
       ]
     },
     {
       "id": "Darren_s_Dilemma",
       "type": "multiple_choice_question",
       "title": "Darren's Dilemma:",
-      "question": "Yikes, this is not good.  Can Afsaneh get Sepideh to shut up and save her?",
+      "question": "[EN] Oh dear, Darren's got a dilemma on his hands, doesn't he? What is he to do? [FR] Darren a un dilemme. Que doit-il faire?",
 
       "options": [
-        "Yes, let Cassie off the bus immediately.",
-        "No, Cassie stays on the bus like everyone else."
+        "Yes, let Cassie off the bus immediately. / Il doit laisser Cassie descendre du bus.",
+        "No, Cassie stays on the bus like everyone else. / Cassie doit rester dans le bus comme tout le monde"
       ]
     },
     {
       "id": "Afsaneh_s_Dilemma",
       "type": "multiple_choice_question",
       "title": "Afsaneh's Dilemma:",
-      "question": "Yikes, this is not good.  Can Afsaneh get Sepideh to shut up and save her?",
+      "question": "[EN] Yikes, this is not good.  Can Afsaneh get Sepideh to shut up and save her? [FR] Ça ne sent pas bon. Est-ce qu'Afsaneh peut faire taire Sepideh et la sauver?",
       "options": [
-        "Definitely.  Our girl's got the skills.",
-        "Absolutely not.  No way.  Uh-uh."
+        "Definitely.  Our girl's got the skills. / Carrément. Elle en est capable.",
+        "Absolutely not.  No way.  Uh-uh. / C'est impossible."
       ],
       "post_submit_message":"Afsaneh_s_Error"
     },
@@ -66,7 +65,7 @@
       "id": "Decision_Time",
       "type": "multiple_choice_question",
       "title": "Decision Time:",
-      "question": "Ash is gonna get stabbed either way, and someone's gotta do it.  So, who will it be?",
+      "question": "[EN] Ash is gonna get stabbed either way, and someone's gotta do it.  So, who will it be? [FR] Ash va se faire poignarder, et quelqu’un doit le faire. Qui s’en charge?",
       "options": ["Gemma", "Hugo"]
     }
   ]
