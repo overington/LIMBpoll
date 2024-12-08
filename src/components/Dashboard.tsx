@@ -181,9 +181,9 @@ export function UserDashboard({ token }: { token: string }) {
 
   const { localCard, setLocalCardID, isLoading, isError, voteHandler } =
     useCard(token);
-  const [count, setCount] = useState<number>(5000);
-  const reduceCount = (amount: number) => {
-    setCount(Math.max(count - amount, 200));
+  const [error_count_afsaneh, setCount] = useState<number>(0);
+  const incrementCount = () => {
+    setCount(error_count_afsaneh + 1);
   }
 
   if (isLoading) return <div>Loading...</div>;
@@ -191,13 +191,16 @@ export function UserDashboard({ token }: { token: string }) {
   if (localCard === null) return <Card>No questions available</Card>;
   else {
     if (localCard.type === "message") {
-      // if Afsaneh_s_Error then count to 5 then set back to Afsaneh_s_Dilemma,
-      // then reduce the count by 2, with a minimum of 0.1
-      if (localCard.id === "Afsaneh_s_Error") {
-        setTimeout(() => {
-          setLocalCardID("Afsaneh_s_Dilemma");
-          reduceCount(500);
-        }, count);
+      // if Afsaneh_s_Error then count to 5 then setLocalCardID to Afsaneh_s_Dilemma, the first time around
+      // then 
+      if (localCard.id.startsWith("Afsaneh_s_Error")) {
+        if (error_count_afsaneh < 2) {
+          setTimeout(() => {
+            setLocalCardID("Afsaneh_s_Dilemma");
+            incrementCount();
+          }, 2000);
+        }
+
       }
 
 
@@ -208,6 +211,7 @@ export function UserDashboard({ token }: { token: string }) {
           currentQuestion={localCard as Question}
           setLocalCardID={setLocalCardID}
           voteHandler={voteHandler}
+          error_count={error_count_afsaneh}
         />
       );
     }

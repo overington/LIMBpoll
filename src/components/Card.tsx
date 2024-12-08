@@ -1,10 +1,12 @@
 import clsx from "clsx";
+import Image from "next/image";
 import {
   type Question,
   type Message,
   postvoted_card_id,
 } from "@/data/questions";
 import { useState } from "react";
+import image_judy from "@/data/hurry-up-judge-judy.gif";
 
 export default function Card(props: {
   children?: React.ReactNode;
@@ -60,7 +62,7 @@ export function CardTitleChev({
 }
 export function LoadingButton() {
   return (
-      <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center">
       <div className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm transition ease-in-out duration-150 cursor-not-allowed">
         <svg
           className="animate-spin -ml-1 mr-3 h-12 w-12 text-white "
@@ -83,10 +85,14 @@ export function LoadingButton() {
           ></path>
         </svg>
       </div>
-      </div>
+    </div>
   );
 }
-export function MessageCard({ message }: { message: Message }) {
+export function MessageCard({
+  message,
+}: {
+  message: Message;
+}) {
   if (!message) {
     return (
       <Card className="font-mono">
@@ -97,7 +103,21 @@ export function MessageCard({ message }: { message: Message }) {
     // count to 5 then set back to Afsaneh_s_Dilemma
     return (
       <Card className="font-mono">
-        <LoadingButton />
+          <LoadingButton />
+        <CardTitleChev> {message.title}</CardTitleChev>
+        <p className="mx-2">{message.subtitle}</p>
+      </Card>
+    );
+  } else if (message.id === "Afsaneh_s_Error2") {
+    // count to 5 then set back to Afsaneh_s_Dilemma
+    return (
+      <Card className="font-mono">
+          <Image
+            src={image_judy}
+            width={500}
+            height={500}
+            alt="Hurry up Judge Judy"
+          />
         <CardTitleChev> {message.title}</CardTitleChev>
         <p className="mx-2">{message.subtitle}</p>
       </Card>
@@ -122,10 +142,12 @@ export function QuestionCard({
   currentQuestion,
   setLocalCardID,
   voteHandler,
+  error_count
 }: {
   currentQuestion: Question;
   setLocalCardID: (card_id: string) => void;
   voteHandler: (question_id: string, vote_id: string) => void;
+  error_count: number;
 }) {
   /**
    * Warning: Assignments to the 'question' variable from inside React Hook
@@ -146,6 +168,11 @@ export function QuestionCard({
 
   return (
     <Card className="font-mono">
+      { 
+        (currentQuestion.id.startsWith("Afsaneh_s_Dilemma") && (error_count >= 1)) ? (
+        <CardTitle><span className="text-red-500">Error, try again</span></CardTitle>
+      ) : null
+    }
       <CardTitleChev>{currentQuestion.title}</CardTitleChev>
       <p className="mx-2 my-4">{currentQuestion.question}</p>
       <p className="mx-2 my-4 text-slate-200 "></p>
@@ -182,16 +209,21 @@ export function QuestionCard({
                 );
                 // After vote submitted, set the card to voted card, or the next card
                 if (currentQuestion.id === "Afsaneh_s_Dilemma") {
-                  setLocalCardID("Afsaneh_s_Error");
+                  if (error_count > 1) {
+                    setLocalCardID("Afsaneh_s_Error2");
+                  } else {
+                    setLocalCardID("Afsaneh_s_Error");
+                  }
                 } else {
-                  console.log("Setting local card to:", postvoted_card_id);
                   setLocalCardID(postvoted_card_id);
                 }
                 set_chosen_vote_id(chosen_vote_id);
               }
             }}
           >
-            {chosen_vote_id === null ? "Please select an option..." : "Submit Vote"}
+            {chosen_vote_id === null
+              ? "Please select an option..."
+              : "Submit Vote"}
           </button>
         </fieldset>
       </form>

@@ -27,6 +27,12 @@
       "subtitle": "Connecting to server to submit vote ..."
     },
     {
+      "id": "Afsaneh_s_Error2",
+      "type": "message",
+      "title": "Error",
+      "subtitle": "Could not connect to server ..."
+    },
+    {
       "id": "Cassie_s_Spotify",
       "type": "multiple_choice_question",
       "title": "Cassie's Spotify:",
@@ -72,7 +78,7 @@
       "id": "Decision_Time",
       "type": "multiple_choice_question",
       "title": "Decision Time:",
-      "question": "[EN] Ash is gonna get stabbed either way, and someone's gotta do it.  So, who will it be? [FR] Ash va se faire poignarder, et quelqu’un doit le faire. Qui s’en charge?",
+      "question": "[EN] Ash is gonna get stabbed either way, and someone's gotta do it.  So, who should it be? [FR] Ash va se faire poignarder de toute façon. Qui doit le faire?",
       "options": ["Gemma", "Hugo"]
     }
   ]
